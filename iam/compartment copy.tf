@@ -3,15 +3,8 @@
 // Created by Bruno Viscaino
 
 resource "oci_identity_compartment" "CreateCompartment" {
-    dynamic "comp" {
-        for_each = "${var.mapcompartment}"
-        content {
-            key = "comp.key"
-            value = "comp.value"
-        }
-    }
-    name = "comp.key"
-    description = "comp.value"
+    name = "${var.dynvar}[name]"
+    description = "${var.dynvar}[description]"
     defined_tags = "${oci_identity_tag.terraform_tag.id}"
     compartment_id = "${var.compartment_id}"
 }
