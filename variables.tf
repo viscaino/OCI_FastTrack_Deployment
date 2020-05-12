@@ -6,6 +6,18 @@ variable "region" {
     default = "us-ashburn-1"
 }
 
+variable "terra_ns" {
+    default = "tag_ns_teste1"
+}
+
+variable "terra_tag" {
+    default = "tag_teste1"
+}
+
+variable "terra_def_tag" {
+    default = "tag_def_teste1"
+}
+
 variable "compartment_id" {
     default = "ocid1.compartment.oc1..aaaaaaaajvl5gaimqv2wni7jrftdxiyxxqubes6jlixadm43mn75kav5p7qq"
 }
