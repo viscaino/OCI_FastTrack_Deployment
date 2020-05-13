@@ -33,11 +33,18 @@ variable "terra_tag_value" {
     default = "tag_value_teste1"
 }
 
-// List of Compartments:
-variable "mapcompartment" {
+// List of Compartments Description:
+variable "CompartmentMap" {
+    type = "map"
     default = {
-        ProdNetCompartment = "Production Network Compartment. Creted by Terraform"
-        QANetCompartment = "QA Network Compartment. Creted by Terraform"
-        DevNetCompartment = "Development Network Compartment. Creted by Terraform"
+        ProdNetComp = "Production Network Compartment. Creted by Terraform"
+        QANetComp = "QA Network Compartment. Creted by Terraform"
+        DevNetComp = "Development Network Compartment. Creted by Terraform"
+        ProdComputeComp = "Production Compute Compartment. Creted by Terraform"
+        QAComputeComp = "QA Compute Compartment. Creted by Terraform"
+        DevComputeComp = "Development Compute Compartment. Creted by Terraform"
+        ProdStorageComp = "Production Storage Compartment. Creted by Terraform"
+        QAStorageComp = "QA Storage Compartment. Creted by Terraform"
+        DevStorageComp = "Development Storage Compartment. Creted by Terraform"
     }
 }
