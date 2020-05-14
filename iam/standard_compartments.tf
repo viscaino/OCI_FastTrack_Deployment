@@ -39,6 +39,7 @@ resource "oci_identity_compartment" "parent_compartment" {
 resource "oci_identity_compartment" "child_compartment" {
     for_each        = "${var.childmap}"
     name            = "${var.env_prefix}${each.key}"
+    compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
     description     = "${var.env_prefix} ${each.value}"
 	defined_tags    =  "${
         map(
