@@ -1,5 +1,4 @@
 # Terraform v0.12 is assumed
-// This TF File is used to deploy compartments.
 // Created by Bruno Viscaino
 ###################################################################
 ##
@@ -27,7 +26,11 @@ resource "oci_identity_compartment" "parent_compartment" {
     depends_on      = ["oci_identity_tag.terraform_tag_key"]
     name            = "${var.env_prefix}_Compartment"
     description     = "${var.env_prefix}_Environment"
-
+	defined_tags    =  "${
+        map(
+            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
+        )
+    }"
 }
 
 // Create a Child Compartments:
