@@ -5,7 +5,7 @@
 //
 resource "oci_identity_group" "groups" {
     for_each        = "${var.groupmap}"
-    compartment_id  = "${var.root_compartment}"
+    compartment_id  = "${var.tenancy}"
     name            = "${var.env_prefix}${each.key}"
     description     = "${each.value}"
 	defined_tags    =  "${
