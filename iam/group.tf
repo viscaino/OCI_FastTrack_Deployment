@@ -14,3 +14,17 @@ resource "oci_identity_group" "groups" {
         )
     }"
 }
+
+data "oci_identity_groups" "my_data_groups" {
+    compartment_id  = "${var.tenancy}"
+    
+    filter {
+        name    = "name"
+        values  = ["key*"]
+        regex   = true
+    }
+}
+
+output "my_data_groups_output" {
+    value = "${data.oci_identity_groups.my_data_groups.groups}"
+}

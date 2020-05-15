@@ -46,3 +46,22 @@ resource "oci_identity_group" "my_groups" {
     name            = "${each.key}"
     description     = "${each.value[var.testevar]}"
 }
+
+data "oci_identity_groups" "my_data_groups_sb" {
+    compartment_id  = "${var.tenancy}"
+    
+    filter {
+        name    = "name"
+        values  = ["key*"]
+        regex   = true
+    }
+}
+
+//output "output_data_groups" {
+//    value   = "${data.oci_identity_groups.my_data_groups_sb.groups}"
+//}
+
+output "output_data_groups_lookup" {
+    value   = "${lookup(data.oci_identity_groups.my_data_groups_sb.groups[0], "id")}"
+}
+
