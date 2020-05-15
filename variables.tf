@@ -57,12 +57,12 @@ variable "terra_tag_value" {
 
 // Map of Group in Environment Prefix:
 //
-variable "groupmap" {
+variable "group_map" {
     type = "map"
     default = {
-        NetworAdmin     = "Network Group Admin"
-        ComputeAdmin    = "Compute Group Admin"
-        StorageAdmin    = "Storage Group Admin"
-        AdminGroup      = "This Group is a Environment Admin"
+        Network = "Network Group Admin"
+        Compute = "Compute Group Admin"
+        Storage = "Storage Group Admin"
+        Admin   = "This Group is a Environment Admin"
     }
 }

@@ -4,9 +4,9 @@
 // Creating Group of Admin Per Environment Prefix
 //
 resource "oci_identity_group" "groups" {
-    for_each        = "${var.groupmap}"
+    for_each        = "${var.group_map}"
     compartment_id  = "${var.tenancy}"
-    name            = "${var.env_prefix}${each.key}"
+    name            = "${var.env_prefix}${each.key}_Group"
     description     = "${each.value}"
 	defined_tags    =  "${
         map(
