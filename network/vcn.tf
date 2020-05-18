@@ -1,34 +1,30 @@
 # Terraform v0.12 is assumed
 // Created by Bruno Viscaino
 
-data "oci_identity_compartments" "net_comp_list" {
-    compartment_id  = "${var.root_compartment}"
+data "oci_identity_compartments" "my_data_comp" {
+    depends_on  = ["oci_identity_compartment.child_compartment"]
+    compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
+
+    filter {
+        name    = "name"
+        values  = ["\\w*Network"]
+        regex   = true
+    }
 }
 
-output "output_data_comp" {
-    value = "${data.oci_identity_compartments.net_comp_list}"
+output "my_data_comp_output" {
+    depends_on  = ["data.oci_identity_compartments.my_data_comp"]
+    value       = "${data.oci_identity_compartments.my_data_comp.compartments}"
 }
 
-/*
-output "output_data_comp_lookup" {
-    value = "${lookup(data.oci_identity_compartments.net_comp_list)}}"
-}
-*/
-/*
-resource "oci_core_vcn" "private_vcn" {
-    compartment_id  = "${lookup(data.oci_identity_compartments.net_comp_list[0], "${var.env_prefix}Netcomp")}}"
-    cidr_block      = "${var.priv_cidr}"
-    dns_label       = "${var.priv_dns_label}"
+output "my_data_comp_output_id" {
+    depends_on  = ["data.oci_identity_compartments.my_data_comp"]
+    value   = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
 }
 
-resource "oci_core_vcn" "public_vcn"{
-    cidr_block = "$(ar.cidr)"
-    dns_lavbel = "publicvcn01"
-    compartment_id ="$(var.compartment_id)"
-    display_name = "publicvcn01"
+resource "oci_core_vcn" "create_vcn" {
+    display_name    = "${var.env_prefix}${var.vcn_name}"
+    cidr_block      = "${var.vcn_cidr}"
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
+    depends_on      = ["data.oci_identity_compartments.my_data_comp"]
 }
-
-output "vcn_id" {
-    value = "${oci_core_vcn.publicvcn.id}"
-}
-*/

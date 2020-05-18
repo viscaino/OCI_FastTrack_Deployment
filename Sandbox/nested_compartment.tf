@@ -28,16 +28,6 @@
 ###################################################################
 
 
-variable "comp" {
-  default = {
-      subnets = "${
-          map(
-           description = "string", 
-            )
-        }"
-  }
-}
-
 /*
 locals {
     subcomp     = "${flatten ([

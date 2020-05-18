@@ -30,3 +30,5 @@ resource "oci_identity_policy" "create_policy" {
         "${each.value["statement_2"]}"
     ]
 }
+
+#Allow group "{$var.group}" to manage instance-family in compartment "${var.root_compartment}":ProdNestedStorage

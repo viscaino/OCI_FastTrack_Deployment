@@ -26,11 +26,6 @@ resource "oci_identity_compartment" "parent_compartment" {
     depends_on      = ["oci_identity_tag.terraform_tag_key"]
     name            = "${var.env_prefix}_Compartment"
     description     = "${var.env_prefix}_Environment"
-	defined_tags    =  "${
-        map(
-            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
-        )
-    }"
 }
 
 // Create a Child Compartments:
@@ -38,12 +33,8 @@ resource "oci_identity_compartment" "parent_compartment" {
 //
 resource "oci_identity_compartment" "child_compartment" {
     for_each        = "${var.childmap}"
+    depends_on      = ["oci_identity_compartment.parent_compartment"]
     name            = "${var.env_prefix}${each.key}"
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
     description     = "${var.env_prefix} ${each.value}"
-	defined_tags    =  "${
-        map(
-            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
-        )
-    }"
 }

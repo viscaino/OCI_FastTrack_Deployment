@@ -8,9 +8,9 @@ variable "region" {
     default = "us-ashburn-1"
 }
 
-// OCI Customer Tenancy id:
+// OCI Customer Tenancy OCID:
 //
-variable "tenancy" {
+variable "tenancy_ocid" {
     default = "ocid1.tenancy.oc1..aaaaaaaa7ojo7t7hedpsnqglouvvvxuakdxtkhb2t542pf5dch4ly2lprcla"
 }
 
@@ -23,7 +23,7 @@ variable "root_compartment" {
 // Environment in use:
 //
 variable "env_prefix" {
-    default = "Prod"
+    default = "TESTE"
 }
 
 // Nested Compartment Map:
@@ -31,9 +31,9 @@ variable "env_prefix" {
 variable "childmap" {
     type = "map"
     default = {
-        NestedNet       = "Network Compartment"
-        NestedCompute   = "Compute Compartment"
-        NestedStorage   = "Storage Compartment"
+        _XNetwork_Comp   = "Network Compartment"
+        _XCompute_Comp   = "Compute Compartment"
+        _XStorage_Comp   = "Storage Compartment"
     }
 }
 
@@ -65,4 +65,41 @@ variable "group_map" {
         Storage = "Storage Group Admin"
         Admin   = "This Group is a Environment Admin"
     }
+}
+
+
+// VCN Name:
+//
+variable "vcn_name" {
+    default = "vcn"
+}
+
+// VCN CIDR:
+//
+variable "vcn_cidr" {
+    default = "10.0.0.0/16"
+}
+
+// Private Subnet Name:
+//
+variable "private_subnet_name" {
+    default = "priv_subnet"
+}
+
+// Private Subnet CIDR:
+//
+variable "private_subnet_cidr" {
+    default = "10.0.1.0/24"
+}
+
+// Private VCN Name:
+//
+variable "public_subnet_name" {
+    default = "pub_subnet"
+}
+
+// Private VCN CIDR:
+//
+variable "public_subnet_cidr" {
+    default = "10.0.2.0/24"
 }
