@@ -83,7 +83,7 @@ variable "vcn_cidr" {
 // Private Subnet Name:
 //
 variable "private_subnet_name" {
-    default = "priv_subnet"
+    default = "Priv_subnet"
 }
 
 // Private Subnet CIDR:
@@ -92,14 +92,38 @@ variable "private_subnet_cidr" {
     default = "10.0.1.0/24"
 }
 
-// Private VCN Name:
+// Private Route Table Name:
 //
-variable "public_subnet_name" {
-    default = "pub_subnet"
+variable "priv_route_tab_name" {
+    default = "Priv_RT"
 }
 
-// Private VCN CIDR:
+// Private Security List Name:
+//
+variable "private_seclist_name" {
+    default = "Priv_SecList"
+}
+
+// Public Subnet Name:
+//
+variable "public_subnet_name" {
+    default = "Pub_subnet"
+}
+
+// Public Subnet CIDR:
 //
 variable "public_subnet_cidr" {
     default = "10.0.2.0/24"
+}
+
+// Public Route Table Name:
+//
+variable "pub_route_tab_name" {
+    default = "Pub_RT"
+}
+
+// Public Security List Name:
+//
+variable "public_seclist_name" {
+    default = "Pub_SecList"
 }
