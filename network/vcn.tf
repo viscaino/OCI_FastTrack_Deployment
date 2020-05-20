@@ -11,6 +11,8 @@
 ##       - Service Gateway
 ##       - NAT Gateway
 ##
+##      PS: We are working to improve data lookup
+##
 ###################################################################
 
 data "oci_identity_compartments" "my_data_comp" {
@@ -19,7 +21,7 @@ data "oci_identity_compartments" "my_data_comp" {
 
     filter {
         name    = "name"
-        values  = ["\\w*Network"]
+        values  = ["${var.env_prefix}\\w*Network"]
         regex   = true
     }
 }
