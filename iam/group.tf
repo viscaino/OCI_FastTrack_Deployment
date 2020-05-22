@@ -9,17 +9,3 @@ resource "oci_identity_group" "groups" {
     name            = "${var.env_prefix}${each.key}_Group"
     description     = "${each.value}"
 }
-
-data "oci_identity_groups" "my_data_groups" {
-    compartment_id  = "${var.tenancy_ocid}"
-    
-    filter {
-        name    = "name"
-        values  = ["key\\w*"]
-        regex   = true
-    }
-}
-
-output "my_data_groups_output" {
-    value = "${data.oci_identity_groups.my_data_groups.groups}"
-}

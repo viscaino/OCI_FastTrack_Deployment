@@ -37,6 +37,25 @@ variable "childmap" {
     }
 }
 
+// Policy Statements
+variable "PolicyMap" {
+    type = "map"
+    default = {
+        Network_Policy = {
+            statement_1 = "Allow group TESTENetwork_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XNetwork_Comp",
+            statement_2 = "Allow group TESTENetwork_Group to manage volume-family in compartment TESTE_Compartment:TESTE_XNetwork_Comp"
+        }
+        Compute_Polcy = {
+            statement_1 = "Allow group TESTECompute_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XCompute_Comp",
+            statement_2 = "Allow group TESTECompute_Group to manage volume-family in compartment TESTE_Compartment:TESTE_XCompute_Comp"
+        }
+        Storage_Polcy = {
+            statement_1 = "Allow group TESTEStorage_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XStorage_Comp",
+            statement_2 = "Allow group TESTEStorage_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XStorage_Comp"
+        }
+    }
+}
+
 // TAG Namespace variable:
 //
 variable "terra_tag_ns" {
