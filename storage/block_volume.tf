@@ -28,15 +28,15 @@ data "oci_core_instances" "data_instances" {
     compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
 }
 
-/* WORKING IN PROGRESS
+ WORKING IN PROGRESS
 resource "oci_core_volume_attachment" "attach_volume" {
     depends_on      = ["oci_core_volume.create_volume"]
     attachment_type = "iscsi"
-    instance_id     = ""
+    instance_id     = "${data.oci_core_instances.data_instances.instances}"
     volume_id       = ""
     device          = ""
 }
-*/
+
 
 output "my_storage_comp_output" {
     depends_on  = ["oci_core_instances.data_instances"]

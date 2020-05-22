@@ -1,6 +1,13 @@
 # Terraform v0.12 is assumed
 // Created by Bruno Viscaino
 
+####!!IMPROVEMENT!!################################################
+##
+##      SUBNET IMPROVMENT REQUIRED
+##      Create a dynamic SUBNET CIDR definition based on VCN CIDR
+##
+###################################################################
+
 resource "oci_core_subnet" "private" {  
     depends_on      = [
         "oci_core_vcn.create_vcn",

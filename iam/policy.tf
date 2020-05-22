@@ -15,7 +15,7 @@ resource "oci_identity_policy" "create_policy" {
         "oci_identity_compartment.child_compartment",
         "oci_identity_group.groups"
         ]
-    name            = "${each.key}"
+    name            = "${var.env_prefix}${each.key}"
     description     = "${each.key}"
     compartment_id  = "${var.root_compartment}"
     statements      = [
