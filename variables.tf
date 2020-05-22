@@ -142,15 +142,21 @@ variable "server_list" {
     default = {
         inst1    = {
             name    = "ServName1",
+            ad      = "hSxN:US-ASHBURN-AD-1",
             shape   = "VM.Standard2.1",
             image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
+            volname = "ServName1Vol01",
+            volsize = "50",
             pubip   = "true"
         }
 
         inst2    = {
             name    = "ServName2",
+            ad      = "hSxN:US-ASHBURN-AD-2",
             shape   = "VM.Standard2.1",
             image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
+            volname = "ServName2Vol01",
+            volsize = "50",
             pubip   = "true"
         }
     }

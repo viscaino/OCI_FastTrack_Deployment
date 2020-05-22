@@ -11,8 +11,13 @@
 ##
 ###################################################################
 
+data "oci_identity_availability_domain" "ad" {
+  compartment_id = "${var.tenancy_ocid}"
+  ad_number      = 1
+}
+
 data "oci_identity_compartments" "my_compute_comp" {
-    depends_on      = ["oci_identity_compartment.child_compartment"]
+    depends_on  = ["oci_identity_compartment.child_compartment"]
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
 
     filter {
@@ -30,7 +35,7 @@ output "my_compute_comp_output" {
 resource "oci_core_instance" "my_pub_instance" {
     for_each            = "${var.server_list}"
     depends_on          = ["oci_core_subnet.public"]
-    availability_domain = "${each.value["ad"]}"
+    availability_domain = "${data.oci_identity_availability_domain.ad.name}"
     compartment_id      = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
     display_name        = "${each.value["name"]}"
     shape               = "${each.value["shape"]}"
@@ -46,7 +51,16 @@ resource "oci_core_instance" "my_pub_instance" {
         assign_public_ip    = "${each.value["pubip"]}"
     }
     
-    metadata    = {
-        ssh_authorized_keys = "${var.ssh_public_key}"
+    metadata = {
+    ssh_authorized_keys = "${var.ssh_public_key}"
     }
+}
+
+resource "oci_core_volume" "create_volume" {
+    for_each            = "${var.volume_map}"
+    depends_on          = ["oci_core_instance.my_pub_instance"]
+    availability_domain = "${data.oci_identity_availability_domain.ad.name}"
+    compartment_id      = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
+    display_name        = "${each.value["vol_name"]}"
+    size_in_gbs         = "${each.value["volsize"]}"
 }
