@@ -169,17 +169,17 @@ variable "server_list" {
             idxctrl = "0",
             pubip   = "true"
         }
-/*
- *       inst2    = {
- *           name    = "ServName2",
- *           ad      = "hSxN:US-ASHBURN-AD-2",
- *           shape   = "VM.Standard2.1",
- *           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
- *           volname = "ServName2Vol01",
- *           volsize = "50",
- *           idxctrl = "2",
- *           pubip   = "true"
- *       }
- */
+
+       inst1    = {
+           name    = "ServName2",
+           ad      = "hSxN:US-ASHBURN-AD-2",
+           shape   = "VM.Standard2.1",
+           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
+           volname = "ServName2Vol01",
+           volsize = "50",
+           idxctrl = "1",
+           pubip   = "true"
+       }
+
     }
 }
