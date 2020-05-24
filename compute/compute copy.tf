@@ -1,41 +1,17 @@
-// Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
+# Terraform v0.12 is assumed
+// Created by Bruno Viscaino
 
 # Defines the number of instances to deploy
 variable "num_instances" {
   default = "3"
 }
 
-# Defines the number of volumes to create and attach to each instance
-# NOTE: Changing this value after applying it could result in re-attaching existing volumes to different instances.
-# This is a result of using 'count' variables to specify the volume and instance IDs for the volume attachment resource.
 variable "num_iscsi_volumes_per_instance" {
   default = "1"
 }
 
-variable "num_paravirtualized_volumes_per_instance" {
-  default = "2"
-}
-
 variable "instance_shape" {
   default = "VM.Standard2.1"
-}
-
-variable "instance_ocpus" {
-  default = 1
-}
-
-variable "instance_image_ocid" {
-  type = "map"
-
-  default = {
-    # See https://docs.us-phoenix-1.oraclecloud.com/images/
-    # Oracle-provided image "Oracle-Linux-7.5-2018.10.16-0"
-    us-phoenix-1 = "ocid1.image.oc1.phx.aaaaaaaaoqj42sokaoh42l76wsyhn3k2beuntrh5maj3gmgmzeyr55zzrwwa"
-
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaitzn6tdyjer7jl34h2ujz74jwy5nkbukbh55ekp6oyzwrtfa4zma"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa32voyikkkzfxyo4xbdmadc2dmvorfxxgdhpnk6dw64fa3l4jh7wa"
-  }
 }
 
 variable "db_size" {
@@ -46,12 +22,8 @@ resource "oci_core_instance" "test_instance" {
   count               = "${var.num_instances}"
   availability_domain = "${data.oci_identity_availability_domain.ad.name}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "TestInstance${count.index}"
+  display_name        = "Inst${count.index}"
   shape               = "${var.instance_shape}"
-
-  shape_config {
-    ocpus = "${var.instance_ocpus}"
-  }
 
   create_vnic_details {
     subnet_id        = "${oci_core_subnet.test_subnet.id}"
@@ -70,8 +42,6 @@ resource "oci_core_instance" "test_instance" {
     user_data           = "${base64encode(file("./userdata/bootstrap"))}"
   }
 }
-
-# Define the volumes that are attached to the compute instances.
 
 resource "oci_core_volume" "test_block_volume" {
   count               = "${var.num_instances * var.num_iscsi_volumes_per_instance}"
@@ -96,6 +66,23 @@ resource "oci_core_volume_attachment" "test_block_attach" {
   #is_read_only = true
 }
 
+resource "oci_core_volume" "test_block_volume_paravirtualized" {
+  count               = "${var.num_instances * var.num_paravirtualized_volumes_per_instance}"
+  availability_domain = "${data.oci_identity_availability_domain.ad.name}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "TestBlockParavirtualized${count.index}"
+  size_in_gbs         = "${var.db_size}"
+}
+
+resource "oci_core_volume_attachment" "test_block_volume_attach_paravirtualized" {
+  count           = "${var.num_instances * var.num_paravirtualized_volumes_per_instance}"
+  attachment_type = "paravirtualized"
+  instance_id     = "${oci_core_instance.test_instance.*.id[floor(count.index / var.num_paravirtualized_volumes_per_instance)]}"
+  volume_id       = "${oci_core_volume.test_block_volume_paravirtualized.*.id[count.index]}"
+
+  # Set this to attach the volume as read-only.
+  #is_read_only = true
+}
 
 resource "oci_core_volume_backup_policy_assignment" "policy" {
   count     = 2
@@ -183,7 +170,66 @@ output "instance_devices" {
 #  value = ["${oci_core_volume_attachment.test_block_attach.*.chap_secret}"]
 #}
 
+output "silver_policy_id" {
+  value = "${data.oci_core_volume_backup_policies.test_predefined_volume_backup_policies.volume_backup_policies.0.id}"
+}
+
+output "attachment_instance_id" {
+  value = "${data.oci_core_boot_volume_attachments.test_boot_volume_attachments.*.instance_id}"
+}
+
+resource "oci_core_vcn" "test_vcn" {
+  cidr_block     = "10.1.0.0/16"
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "TestVcn"
+  dns_label      = "testvcn"
+}
+
+resource "oci_core_internet_gateway" "test_internet_gateway" {
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "TestInternetGateway"
+  vcn_id         = "${oci_core_vcn.test_vcn.id}"
+}
+
+resource "oci_core_default_route_table" "default_route_table" {
+  manage_default_resource_id = "${oci_core_vcn.test_vcn.default_route_table_id}"
+  display_name               = "DefaultRouteTable"
+
+  route_rules {
+    destination       = "0.0.0.0/0"
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = "${oci_core_internet_gateway.test_internet_gateway.id}"
+  }
+}
+
+resource "oci_core_subnet" "test_subnet" {
+  availability_domain = "${data.oci_identity_availability_domain.ad.name}"
+  cidr_block          = "10.1.20.0/24"
+  display_name        = "TestSubnet"
+  dns_label           = "testsubnet"
+  security_list_ids   = ["${oci_core_vcn.test_vcn.default_security_list_id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_vcn.test_vcn.id}"
+  route_table_id      = "${oci_core_vcn.test_vcn.default_route_table_id}"
+  dhcp_options_id     = "${oci_core_vcn.test_vcn.default_dhcp_options_id}"
+}
+
 data "oci_identity_availability_domain" "ad" {
   compartment_id = "${var.tenancy_ocid}"
   ad_number      = 1
 }
+
+    © 2020 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Status
+    Help
+
+    Contact GitHub
+    Pricing
+    API
+    Training
+    Blog
+    About
+

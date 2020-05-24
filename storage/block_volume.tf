@@ -11,6 +11,13 @@ data "oci_identity_compartments" "my_storage_comp" {
         regex   = true
     }
 }
+data "oci_core_instances" "my_instances_for_bs" {
+    compartment_id      = "${lookup(data.oci_identity_compartments.my_storage_comp.compartments[0], "id")}"
+}
+
+output "my_instances_for_bs_output" {
+    value   = "${lookup(data.oci_core_instances.my_instances_for_bs)}"
+}
 
 resource "oci_core_volume" "create_volume" {
     for_each            = "${var.server_list}"
@@ -24,26 +31,14 @@ resource "oci_core_volume" "create_volume" {
     size_in_gbs         = "${each.value["volsize"]}"
 }
 
-data "oci_core_instances" "data_instances" {
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
-}
-
- WORKING IN PROGRESS
+//---------------------//
+// WORKING IN PROGRESS //
+//---------------------//
 resource "oci_core_volume_attachment" "attach_volume" {
+    for_each        = "${var.server_list}"
     depends_on      = ["oci_core_volume.create_volume"]
     attachment_type = "iscsi"
-    instance_id     = "${data.oci_core_instances.data_instances.instances}"
-    volume_id       = ""
+    instance_id     = "${data.oci_core_instances.data_instances.instances[]}"
+    volume_id       = "${oci_core_volume.test_block_volume.*.id[valus(${each.valu["int_crtl"]})]}"
     device          = ""
-}
-
-
-output "my_storage_comp_output" {
-    depends_on  = ["oci_core_instances.data_instances"]
-    value       = "${data.oci_identity_compartments.my_storage_comp.compartments}"
-}
-
-output "data_instances_output" {
-    depends_on  = ["oci_core_instances.data_instances"]
-    value       = "${data.oci_core_instances.data_instances.instances}"
 }

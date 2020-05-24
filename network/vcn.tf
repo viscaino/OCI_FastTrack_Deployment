@@ -34,16 +34,6 @@ data "oci_core_services" "test_services" {
   }
 }
 
-output "my_data_comp_output" {
-    depends_on  = ["data.oci_identity_compartments.my_data_comp"]
-    value       = "${data.oci_identity_compartments.my_data_comp.compartments}"
-}
-
-output "my_data_comp_output_id" {
-    depends_on  = ["data.oci_identity_compartments.my_data_comp"]
-    value   = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
-}
-
 resource "oci_core_vcn" "create_vcn" {
     display_name    = "${var.env_prefix}${var.vcn_name}"
     cidr_block      = "${var.vcn_cidr}"
