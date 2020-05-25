@@ -4,13 +4,17 @@
 ###################################################################
 ##
 ##      COMPUTE INSTANCE
-##      This block deploy a unique compute instance:
+##      This block deploy:
+##          - Compute
+##          - Volumes
+##          - Volumes Attachment
 ##
 ##      PS: We are working to create a map for AD selection.
 ##      PS: Create a randomic AD distribution
 ##
 ###################################################################
 
+#--INSTANCE-CREATION--------------------------------------------------------------------------------------------
 data "oci_identity_compartments" "my_compute_comp" {
     depends_on      = ["oci_identity_compartment.child_compartment"]
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
@@ -46,6 +50,7 @@ resource "oci_core_instance" "my_pub_instance" {
     }
 }
 
+#--VOLUMES-CREATION--------------------------------------------------------------------------------------------
 data "oci_identity_compartments" "my_storage_comp" {
     depends_on      = ["oci_identity_compartment.child_compartment"]
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
@@ -69,8 +74,7 @@ resource "oci_core_volume" "create_volume" {
     size_in_gbs         = "${each.value["volsize"]}"
 }
 
-#---------------------------------------------------------------------------------------------------------------
-# INSTANCE Selection Test
+#--INSTANCE-Selection-----------------------------------------------------------------------------------------
 data "oci_core_instances" "data_inst" {
     depends_on      = ["oci_core_instance.my_pub_instance"]
     compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
@@ -81,21 +85,7 @@ data "oci_core_instances" "data_inst" {
     }
 }
 
-output "INSTANCE_com_DATA" {
-    value   = "${lookup(data.oci_core_instances.data_inst.instances[0], "id")}"
-}
-
-output "INSTANCE_sem_DATA" {
-    value = "${oci_core_instance.my_pub_instance}"
-}
-
-output "INSTANCE_FOR_output" {
-    depends_on      = ["oci_core_instance.my_pub_instance"]
-    value           = ["for value in oci_core_instance.my_pub_instance: value.id"]
-}
-
-#---------------------------------------------------------------------------------------------------------------
-# VOLUME_S Selection Test
+#--VOLUMES-Selection-----------------------------------------------------------------------------------------
 data "oci_core_volumes" "my_data_vols" {
     depends_on      = ["oci_core_volume.create_volume"]
     compartment_id  = "${lookup(data.oci_identity_compartments.my_storage_comp.compartments[0], "id")}"
@@ -105,32 +95,8 @@ data "oci_core_volumes" "my_data_vols" {
         values  = ["AVAILABLE"]
     }
 }
-/////////////////////////////
-// Este output funciona porem
-// somente considerando index
-// numerico. Testar []
-/////////////////////////////
 
-variable "testeidx" {
-    default = "0"
-}
-output "VOLUME_com_DATA" {
-    value  = "${lookup(data.oci_core_volumes.my_data_vols.volumes[0], "id")}"
-}
-
-#---------------------------------------------------------------------------------------------------------------
-# VOLUME Selection Test
-/*
-output "VOLUME_sem_DATA" {
-    value           = "${oci_core_volume.create_volume}"
-}
-*/
-output "VOLUME_FOR_output" {
-    depends_on      = ["oci_core_volume.create_volume"]
-    value           = ["for vol in oci_core_volume.create_volume: vol.id"]
-}
-
-#---------------------------------------------------------------------------------------------------------------
+#--VOLUMES-Attachment---------------------------------------------------------------------------------------
 
 resource "oci_core_volume_attachment" "attach_volume" {
     for_each        = "${var.server_list}"
@@ -140,7 +106,26 @@ resource "oci_core_volume_attachment" "attach_volume" {
     volume_id       = "${lookup(data.oci_core_volumes.my_data_vols.volumes[each.value["idxctrl"]], "id")}"
 }
 
+#-OUTPUTS---------------------------------------------------------------------------------------------------
+output "INSTANCE_com_DATA" {
+    value   = "${lookup(data.oci_core_instances.data_inst.instances[0], "id")}"
+}
+
+output "INSTANCE_sem_DATA" {
+    value = "${oci_core_instance.my_pub_instance}"
+}
+
 output "attachment_output" {
     depends_on  = ["oci_core_volume_attachment.attach_volume"]
     value       = "${oci_core_volume_attachment.attach_volume}"
 }
+
+#output "INSTANCE_FOR_output" {
+#    depends_on      = ["oci_core_instance.my_pub_instance"]
+#    value           = ["for value in oci_core_instance.my_pub_instance: value.id"]
+#}
+
+#output "VOLUME_FOR_output" {
+#    depends_on      = ["oci_core_volume.create_volume"]
+#    value           = ["for vol in oci_core_volume.create_volume: vol.id"]
+#}

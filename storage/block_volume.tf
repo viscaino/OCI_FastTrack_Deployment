@@ -1,6 +1,14 @@
 # Terraform v0.12 is assumed
 // Created by Bruno Viscaino
 
+###################################################################
+##
+##      DEPRECATED BY COMPUTE TF FILE
+##          Currently this block was included into compute
+##          tf file.
+##
+###################################################################
+/*
 data "oci_identity_compartments" "my_storage_comp" {
     depends_on      = ["oci_identity_compartment.child_compartment"]
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
@@ -42,3 +50,4 @@ resource "oci_core_volume_attachment" "attach_volume" {
     volume_id       = "${oci_core_volume.test_block_volume.*.id[valus(${each.valu["int_crtl"]})]}"
     device          = ""
 }
+*/

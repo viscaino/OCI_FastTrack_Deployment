@@ -31,9 +31,11 @@ variable "env_prefix" {
 variable "childmap" {
     type = "map"
     default = {
-        _XNetwork_Comp   = "Network Compartment"
-        _XCompute_Comp   = "Compute Compartment"
-        _XStorage_Comp   = "Storage Compartment"
+        _XNetwork_Comp  = "Network Compartment"
+        _XCompute_Comp  = "Compute Compartment"
+        _XStorage_Comp  = "Storage Compartment"
+        _XDatabase_Comp = "Storage Compartment"
+
     }
 }
 
@@ -85,7 +87,6 @@ variable "group_map" {
         Admin   = "This Group is a Environment Admin"
     }
 }
-
 
 // VCN Name:
 //
