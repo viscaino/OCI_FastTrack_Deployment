@@ -1,22 +1,6 @@
 # Terraform v0.12 is assumed
 // Created by Bruno Viscaino
 
-variable "adb_workload" {
-    default = "OLTP"
-}
-
-variable "adb_name" {
-    default = "adbdb01"
-}
-
-variable "adb_autoscaling" {
-    default = "false"
-}
-
-variable "adb_license_model" {
-  default = "LICENSE_INCLUDED"
-}
-
 resource "random_string" "adb_password_creation" {
   length      = 16
   min_numeric = 1

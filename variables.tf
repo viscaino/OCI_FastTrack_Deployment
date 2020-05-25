@@ -184,3 +184,23 @@ variable "server_list" {
 
     }
 }
+
+// Autonomous DB workload
+variable "adb_workload" {
+    default = "OLTP"
+}
+
+// Autonomous DB Name
+variable "adb_name" {
+    default = "adbdb01"
+}
+
+// Autonomous DB Autoscaling policy
+variable "adb_autoscaling" {
+    default = "false"
+}
+
+// Autonomous DB License
+variable "adb_license_model" {
+  default = "LICENSE_INCLUDED"
+}
