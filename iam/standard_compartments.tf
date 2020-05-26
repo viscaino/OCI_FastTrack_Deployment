@@ -23,7 +23,7 @@
 //
 resource "oci_identity_compartment" "parent_compartment" {
     compartment_id  = "${var.root_compartment}"
-    depends_on      = ["oci_identity_tag.terraform_tag_key"]
+#    depends_on      = ["oci_identity_tag.terraform_tag_key"]
     name            = "${var.env_prefix}_Compartment"
     description     = "${var.env_prefix}_Environment"
 }

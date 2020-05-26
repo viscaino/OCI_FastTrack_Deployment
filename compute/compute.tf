@@ -46,7 +46,7 @@ resource "oci_core_instance" "my_pub_instance" {
     }
     
     metadata    = {
-        ssh_authorized_keys = "${var.ssh_public_key}"
+        ssh_authorized_keys = "${file(var.ssh_public_key)}"
     }
 }
 
@@ -106,9 +106,40 @@ resource "oci_core_volume_attachment" "attach_volume" {
     volume_id       = "${lookup(data.oci_core_volumes.my_data_vols.volumes[each.value["idxctrl"]], "id")}"
 }
 
-#-OUTPUTS---------------------------------------------------------------------------------------------------
-output "INSTANCE_com_DATA" {
-    value   = "${lookup(data.oci_core_instances.data_inst.instances[0], "id")}"
+data "oci_core_volume_attachments" "my_data_attach" {
+    depends_on      = ["oci_core_volume_attachment.attach_volume"]
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
+}
+
+output "my_data_attach_output" {
+    depends_on  = ["data.oci_core_volume_attachments.my_data_attach"]
+    value       = "${data.oci_core_volume_attachments.my_data_attach}"
+}
+
+#--PROVISIONER-----------------------------------------------------------------------------------------------
+
+output "public_ip_output" {
+    value = "${lookup(data.oci_core_instances.data_inst.instances[0], "public_ip")}"
+}
+#
+#resource "null_resource" "remote-exec" {
+#  depends_on = ["oci_core_volume_attachment.attach_volume"] 
+#
+#    provisioner "remote-exec" {
+#        connection {
+#            agent       = false
+#            timeout     = "30m"
+#            host        = "${lookup(data.oci_core_instances.data_inst.instances[0], "public_ip")}"
+#            user        = "opc"
+#            private_key = "${file(var.ssh_private_key)}"
+#        }
+#        inline = ["touch /tmp/IMadeAFile.Right.Here"]
+#    }
+#}
+
+#--OUTPUTS---------------------------------------------------------------------------------------------------
+output "INSTANCES_com_DATA" {
+    value   = "${data.oci_core_instances.data_inst.instances}"
 }
 
 output "INSTANCE_sem_DATA" {

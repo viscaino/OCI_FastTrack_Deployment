@@ -148,11 +148,16 @@ variable "public_seclist_name" {
     default = "Pub_SecList"
 }
 
-// SSH public Key
-// PS.: Working to extract from file
+// SSH Public Key
 //
 variable "ssh_public_key" {
-    default = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1EDq34mbfQkE4P5Pq2hFPAirRBqD3o/eAyh55FxsYobnEgjFk6fJS5UKd4jOBJhm12kjJEgotblwePCqbTKIFudXVl0VwW2QgswgSqSnc5InEyHzsSfztJ3yaaGocSVMtNUtMIFcw6ICsghkYB2swsUMY8qj0vV0qLsHEZ8Xr7Ti6ae8iDGfmJ2zf/lG7oUSlYO52pqFrT9T9ThSRpJAxM2d2PXy/cVhBn8QQoaIuUdjbZVkH94cGwlxhqwIJYO6aNDjKivrDNSb1VQY/PcLhPUFXdXxwpOBL2tUC1vkjujcdHtOgCb8mwS+Z2W4zjZ3d7oBgE4VgRNnD3vIMymSPw=="
+    default = "userdata/id_rsa.pub"
+}
+
+// SSH private Key
+//
+variable "ssh_private_key" {
+    default = "userdata/id_rsa"
 }
 
 // Server List Teste
