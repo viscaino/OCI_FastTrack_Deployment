@@ -61,19 +61,19 @@ variable "PolicyMap" {
 // TAG Namespace variable:
 //
 variable "terra_tag_ns" {
-    default = "tag_ns_teste1"
+    default = "TagNS"
 }
 
 // TAG Key variable:
 //
 variable "terra_tag_key" {
-    default = "tag_key_teste1"
+    default = "TagKey"
 }
 
 // TAG value variable:
 //
 variable "terra_tag_value" {
-    default = "tag_value_teste1"
+    default = "TagValue"
 }
 
 // Map of Group in Environment Prefix:
@@ -187,6 +187,16 @@ variable "server_list" {
            pubip   = "true"
        }
 
+       inst2    = {
+           name    = "ServName2",
+           ad      = "hSxN:US-ASHBURN-AD-2",
+           shape   = "VM.Standard.E2.2",
+           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
+           volname = "ServName2Vol01",
+           volsize = "50",
+           idxctrl = "2",
+           pubip   = "true"
+       }
     }
 }
 

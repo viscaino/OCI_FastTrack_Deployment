@@ -26,24 +26,27 @@ data "oci_database_autonomous_db_versions" "get_version" {
 }
 
 resource "oci_database_autonomous_database" "create_adb" {
-    depends_on                  = ["oci_identity_compartment.child_compartment"]
-    compartment_id              = "${lookup(data.oci_identity_compartments.my_database_comp.compartments[0], "id")}"
-    display_name                = "${var.adb_name}"
-    db_name                     = "${var.adb_name}"
-    admin_password              = "${random_string.adb_password_creation.result}"
-    cpu_core_count              = "1"
-    data_storage_size_in_tbs    = "1"
+  depends_on      = ["oci_identity_compartment.child_compartment"]
+  compartment_id  = "${lookup(data.oci_identity_compartments.my_database_comp.compartments[0], "id")}"
+  display_name    = "${var.adb_name}"
+  db_name         = "${var.adb_name}"
+  admin_password  = "${random_string.adb_password_creation.result}"
+  
+  cpu_core_count            = "1"
+  data_storage_size_in_tbs  = "1"
+  
+  db_version              = "${data.oci_database_autonomous_db_versions.get_version.autonomous_db_versions.0.version}"
+  db_workload             = "${var.adb_workload}"
+  is_auto_scaling_enabled = "${var.adb_autoscaling}"
+  license_model           = "${var.adb_license_model}"
+  whitelisted_ips         = ["0.0.0.0/24"]
 
-    #Optional
-    db_version              = "${data.oci_database_autonomous_db_versions.get_version.autonomous_db_versions.0.version}"
-    db_workload             = "${var.adb_workload}"
-    is_auto_scaling_enabled = "${var.adb_autoscaling}"
-    license_model           = "${var.adb_license_model}"
-    whitelisted_ips         = ["0.0.0.0/24"]
-}
+  defined_tags  = "${
+    map(
+      "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
+    )
+  }"
 
-output "adb_output" {
-    value = "${oci_database_autonomous_database.create_adb}"
 }
 
 data "oci_database_autonomous_database_wallet" "data_adb_wallet" {
@@ -52,6 +55,10 @@ data "oci_database_autonomous_database_wallet" "data_adb_wallet" {
   base64_encode_content  = "true"
 }
 
-output "data_adb_wallet_output" {
-    value   = "${data.oci_database_autonomous_database_wallet.data_adb_wallet}"
-}
+#output "adb_output" {
+#    value = "${oci_database_autonomous_database.create_adb}"
+#}
+#
+#output "data_adb_wallet_output" {
+#    value   = "${data.oci_database_autonomous_database_wallet.data_adb_wallet}"
+#}

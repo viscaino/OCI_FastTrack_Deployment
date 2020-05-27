@@ -18,6 +18,13 @@ resource "oci_identity_policy" "create_policy" {
     name            = "${var.env_prefix}${each.key}"
     description     = "${each.key}"
     compartment_id  = "${var.root_compartment}"
+    
+    defined_tags    =  "${
+        map(
+            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
+        )
+    }"
+
     statements      = [
         "${each.value["statement_1"]}",
         "${each.value["statement_2"]}"

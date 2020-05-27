@@ -6,7 +6,7 @@
 resource "oci_identity_tag_namespace" "terraform_tag_ns" {
     compartment_id  = "${var.tenancy_ocid}"
     description     = "TAG Namespace to identify Terraform creation."
-    name            = "${var.terra_tag_ns}"
+    name            = "${var.env_prefix}${var.terra_tag_ns}"
 }
 
 // TAG Key Creation.

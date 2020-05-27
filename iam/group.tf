@@ -8,4 +8,10 @@ resource "oci_identity_group" "groups" {
     compartment_id  = "${var.tenancy_ocid}"
     name            = "${var.env_prefix}${each.key}_Group"
     description     = "${each.value}"
+    
+    defined_tags    =  "${
+        map(
+            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
+        )
+    }"
 }

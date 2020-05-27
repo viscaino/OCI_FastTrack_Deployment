@@ -15,7 +15,7 @@
 ##
 ###################################################################
 
-data "oci_identity_compartments" "my_data_comp" {
+data "oci_identity_compartments" "my_network_comp" {
     depends_on  = ["oci_identity_compartment.child_compartment"]
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
 
@@ -37,14 +37,19 @@ data "oci_core_services" "test_services" {
 resource "oci_core_vcn" "create_vcn" {
     display_name    = "${var.env_prefix}${var.vcn_name}"
     cidr_block      = "${var.vcn_cidr}"
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
-    depends_on      = ["data.oci_identity_compartments.my_data_comp"]
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
+    depends_on      = ["data.oci_identity_compartments.my_network_comp"]
+    defined_tags    =  "${
+        map(
+            "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
+        )
+    }"
 }
 
 resource "oci_core_internet_gateway" "create_igw" {
     depends_on      = ["oci_core_vcn.create_vcn"]
     display_name    = "${var.env_prefix}${var.vcn_name}_igw"
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
     vcn_id          = "${oci_core_vcn.create_vcn.id}"
 }
 
@@ -56,7 +61,7 @@ output "my_igw_id_output" {
 resource "oci_core_service_gateway" "create_svcgw" {
     depends_on      = ["oci_core_vcn.create_vcn"]
     display_name    = "${var.env_prefix}${var.vcn_name}_svcgw"
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
     vcn_id          = "${oci_core_vcn.create_vcn.id}"
     services {
     service_id = "${lookup(data.oci_core_services.test_services.services[0], "id")}"
@@ -71,7 +76,7 @@ output "my_svcgw_output" {
 resource "oci_core_nat_gateway" "create_natgw" {
     depends_on      = ["oci_core_vcn.create_vcn"]
     display_name    = "${var.env_prefix}${var.vcn_name}_natgw"
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
     vcn_id          = "${oci_core_vcn.create_vcn.id}"  
 }
 
@@ -82,10 +87,10 @@ output "my_natgw_output" {
 
 data "oci_core_vcns" "my_data_vcn" {
     depends_on  = ["oci_core_vcn.create_vcn"]
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_data_comp.compartments[0], "id")}"
+    compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
 }
 
-output "my_vcns_output" {
+output "VCN_Outputs" {
     depends_on  = ["oci_core_vcn.create_vcn"]
     value       = "${lookup(data.oci_core_vcns.my_data_vcn.virtual_networks[0], "id")}"
 }
