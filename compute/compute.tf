@@ -127,17 +127,17 @@ data "oci_core_volume_attachments" "my_data_attach" {
 #--PROVISIONER-----------------------------------------------------------------------------------------------
 
 resource "null_resource" "remote-exec" {
-  depends_on = ["oci_core_volume_attachment.attach_volume"] 
+    depends_on = ["oci_core_volume_attachment.attach_volume"] 
 
     provisioner "remote-exec" {
         connection {
-            agent       = false
-            timeout     = "30m"
-            host        = "${lookup(data.oci_core_instances.data_inst.instances[0], "public_ip")}"
-            user        = "opc"
+            agent   = false
+            timeout = "5min"
+            host    = "${lookup(oci_core_instance.my_pub_instance[each.value["idxctrl"]], "public_ip")}"
+            user    =  "opc"
             private_key = "${file(var.ssh_private_key)}"
         }
-        inline = ["touch /tmp/IMadeAFile.Right.Here"]
+        inline = ["touch /tmp/IMadeAFile.Right.Here"]           
     }
 }
 
