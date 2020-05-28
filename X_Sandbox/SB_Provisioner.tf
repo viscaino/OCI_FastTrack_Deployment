@@ -14,18 +14,19 @@ variable "region" {
 }
 
 variable "ssh_private_key" {
-    default = "id_rsa"
+    default = "userdata/id_rsa"
 }
+
+variable "instance_ip" {}
 
 #-------------------------------------------------------------------------------------------
 resource "null_resource" "remote-exec" {
-#  depends_on = ["oci_core_volume_attachment.attach_volume"] 
 
     provisioner "remote-exec" {
         connection {
             agent       = false
-            timeout     = "30m"
-            host        = "129.213.55.126"
+            timeout     = "5m"
+            host        = "${var.instance_ip}"
             user        = "opc"
             private_key = "${file(var.ssh_private_key)}"
         }

@@ -23,7 +23,7 @@ variable "root_compartment" {
 // Environment in use:
 //
 variable "env_prefix" {
-    default = "Test"
+    default = "Dev"
 }
 
 // Nested Compartment Map:
@@ -43,16 +43,16 @@ variable "PolicyMap" {
     type = "map"
     default = {
         Network_Policy = {
-            statement_1 = "Allow group Test_Network_Group to use instance-family in compartment Test_Compartment:Test_Network_Comp",
-            statement_2 = "Allow group Test_Network_Group to manage volume-family in compartment Test_Compartment:Test_Network_Comp"
+            statement_1 = "Allow group Dev_Network_Group to use instance-family in compartment Dev_Compartment:Dev_Network_Comp",
+            statement_2 = "Allow group Dev_Network_Group to manage volume-family in compartment Dev_Compartment:Dev_Network_Comp"
         }
         Compute_Polcy = {
-            statement_1 = "Allow group Test_Compute_Group to manage instance-family in compartment Test_Compartment:Test_Compute_Comp",
-            statement_2 = "Allow group Test_Compute_Group to use volume-family in compartment Test_Compartment:Test_Compute_Comp"
+            statement_1 = "Allow group Dev_Compute_Group to manage instance-family in compartment Dev_Compartment:Dev_Compute_Comp",
+            statement_2 = "Allow group Dev_Compute_Group to use volume-family in compartment Dev_Compartment:Dev_Compute_Comp"
         }
         Storage_Polcy = {
-            statement_1 = "Allow group Test_Storage_Group to manage volume-family in compartment Test_Compartment:Test_Storage_Comp",
-            statement_2 = "Allow group Test_Storage_Group to use instance-family in compartment Test_Compartment:Test_Storage_Comp"
+            statement_1 = "Allow group Dev_Storage_Group to manage volume-family in compartment Dev_Compartment:Dev_Storage_Comp",
+            statement_2 = "Allow group Dev_Storage_Group to use instance-family in compartment Dev_Compartment:Dev_Storage_Comp"
         }
     }
 }
