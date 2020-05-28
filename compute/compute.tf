@@ -33,7 +33,7 @@ resource "oci_core_instance" "my_pub_instance" {
     depends_on          = ["oci_core_subnet.public"]
     availability_domain = "${each.value["ad"]}"
     compartment_id      = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
-    display_name        = "${each.key}"
+    display_name        = "${each.value["name"]}"
     shape               = "${each.value["shape"]}"
     
     source_details {
@@ -43,7 +43,7 @@ resource "oci_core_instance" "my_pub_instance" {
 
     create_vnic_details {
         subnet_id           = "${oci_core_subnet.public.id}"
-        display_name        = "${each.key}_pubvnic"
+        display_name        = "${each.value["name"]}_pubvnic"
         assign_public_ip    = "${each.value["pubip"]}"
     }
     
@@ -60,11 +60,10 @@ resource "oci_core_instance" "my_pub_instance" {
 }
 
 #--INSTANCE-Selection-----------------------------------------------------------------------------------------
-data "oci_core_instances" "data_inst" {
+data "oci_core_instances" "my_instances" {
     depends_on      = [
         "oci_core_instance.my_pub_instance",
         "oci_core_subnet.public"
-
         ]
     compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
 
@@ -115,30 +114,36 @@ resource "oci_core_volume_attachment" "attach_volume" {
     for_each        = "${var.server_list}"
     depends_on      = ["oci_core_volume.create_volume"]
     attachment_type = "iscsi"
-    instance_id     = "${lookup(data.oci_core_instances.data_inst.instances[each.value["idxctrl"]], "id")}"
+    instance_id     = "${lookup(data.oci_core_instances.my_instances.instances[each.value["idxctrl"]], "id")}"
     volume_id       = "${lookup(data.oci_core_volumes.my_data_vols.volumes[each.value["idxctrl"]], "id")}"
 }
 
 data "oci_core_volume_attachments" "my_data_attach" {
-    depends_on      = ["oci_core_volume_attachment.attach_volume"]
+    depends_on      = [
+        "oci_core_instance.my_pub_instance",
+        "oci_core_volume_attachment.attach_volume"
+    ]
     compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
 }
 
 #--PROVISIONER-----------------------------------------------------------------------------------------------
-
-resource "null_resource" "remote-exec" {
-    depends_on = ["oci_core_volume_attachment.attach_volume"] 
-
-    provisioner "remote-exec" {
-        connection {
-            agent   = false
-            timeout = "5min"
-            host    = "${lookup(oci_core_instance.my_pub_instance[each.value["idxctrl"]], "public_ip")}"
-            user    =  "opc"
-            private_key = "${file(var.ssh_private_key)}"
-        }
-        inline = ["touch /tmp/IMadeAFile.Right.Here"]           
-    }
-}
-
+#
+#resource "null_resource" "remote-exec" {
+#    depends_on = [
+#        "oci_core_instance.my_pub_instance",
+#        "oci_core_volume_attachment.attach_volume"
+#    ] 
+#
+#    provisioner "remote-exec" {
+#        connection {
+#            agent   = false
+#            timeout = "5min"
+#            host    = "${data.oci_core_instances.my_instances.instances.public_ip}"
+#            user    =  "opc"
+#            private_key = "${file(var.ssh_private_key)}"
+#        }
+#        inline = ["touch /tmp/IMadeAFile.Right.Here"]           
+#    }
+#}
+#
 #--OUTPUTS---------------------------------------------------------------------------------------------------

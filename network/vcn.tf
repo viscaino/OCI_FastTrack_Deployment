@@ -35,10 +35,13 @@ data "oci_core_services" "test_services" {
 }
 
 resource "oci_core_vcn" "create_vcn" {
+    depends_on      = [
+        "oci_identity_compartment.child_compartment",
+        "data.oci_identity_compartments.my_network_comp"
+    ]
     display_name    = "${var.env_prefix}${var.vcn_name}"
     cidr_block      = "${var.vcn_cidr}"
     compartment_id  = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
-    depends_on      = ["data.oci_identity_compartments.my_network_comp"]
     defined_tags    =  "${
         map(
             "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"

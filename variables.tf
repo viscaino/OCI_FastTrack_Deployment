@@ -23,7 +23,7 @@ variable "root_compartment" {
 // Environment in use:
 //
 variable "env_prefix" {
-    default = "TESTE"
+    default = "Test"
 }
 
 // Nested Compartment Map:
@@ -31,11 +31,10 @@ variable "env_prefix" {
 variable "childmap" {
     type = "map"
     default = {
-        _XNetwork_Comp  = "Network Compartment"
-        _XCompute_Comp  = "Compute Compartment"
-        _XStorage_Comp  = "Storage Compartment"
-        _XDatabase_Comp = "Storage Compartment"
-
+        _Network_Comp  = "Network Compartment"
+        _Compute_Comp  = "Compute Compartment"
+        _Storage_Comp  = "Storage Compartment"
+        _Database_Comp = "Database Compartment"
     }
 }
 
@@ -44,16 +43,16 @@ variable "PolicyMap" {
     type = "map"
     default = {
         Network_Policy = {
-            statement_1 = "Allow group TESTENetwork_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XNetwork_Comp",
-            statement_2 = "Allow group TESTENetwork_Group to manage volume-family in compartment TESTE_Compartment:TESTE_XNetwork_Comp"
+            statement_1 = "Allow group Test_Network_Group to use instance-family in compartment Test_Compartment:Test_Network_Comp",
+            statement_2 = "Allow group Test_Network_Group to manage volume-family in compartment Test_Compartment:Test_Network_Comp"
         }
         Compute_Polcy = {
-            statement_1 = "Allow group TESTECompute_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XCompute_Comp",
-            statement_2 = "Allow group TESTECompute_Group to manage volume-family in compartment TESTE_Compartment:TESTE_XCompute_Comp"
+            statement_1 = "Allow group Test_Compute_Group to manage instance-family in compartment Test_Compartment:Test_Compute_Comp",
+            statement_2 = "Allow group Test_Compute_Group to use volume-family in compartment Test_Compartment:Test_Compute_Comp"
         }
         Storage_Polcy = {
-            statement_1 = "Allow group TESTEStorage_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XStorage_Comp",
-            statement_2 = "Allow group TESTEStorage_Group to manage instance-family in compartment TESTE_Compartment:TESTE_XStorage_Comp"
+            statement_1 = "Allow group Test_Storage_Group to manage volume-family in compartment Test_Compartment:Test_Storage_Comp",
+            statement_2 = "Allow group Test_Storage_Group to use instance-family in compartment Test_Compartment:Test_Storage_Comp"
         }
     }
 }
@@ -81,10 +80,11 @@ variable "terra_tag_value" {
 variable "group_map" {
     type = "map"
     default = {
-        Network = "Network Group Admin"
-        Compute = "Compute Group Admin"
-        Storage = "Storage Group Admin"
-        Admin   = "This Group is a Environment Admin"
+        _Network = "Network Group Admin"
+        _Compute = "Compute Group Admin"
+        _Storage = "Storage Group Admin"
+        _Database = "Database Group Admin"
+        _Admin   = "This Group is a Environment Admin"
     }
 }
 
@@ -186,17 +186,6 @@ variable "server_list" {
            idxctrl = "1",
            pubip   = "true"
        }
-
-       inst2    = {
-           name    = "ServName2",
-           ad      = "hSxN:US-ASHBURN-AD-2",
-           shape   = "VM.Standard.E2.2",
-           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
-           volname = "ServName2Vol01",
-           volsize = "50",
-           idxctrl = "2",
-           pubip   = "true"
-       }
     }
 }
 
@@ -218,4 +207,41 @@ variable "adb_autoscaling" {
 // Autonomous DB License
 variable "adb_license_model" {
   default = "LICENSE_INCLUDED"
+}
+
+// Security List Rules
+variable "pub_seclist_ingress_rules" {
+    type = "map"
+    default = {
+        role001 = {
+            protocol    = "6",
+            source      = "0.0.0.0/0",
+            min         = "22",
+            max         = "22"
+        }
+        role002 = {
+            protocol    = "6",
+            source      = "0.0.0.0/0",
+            min         = "80",
+            max         = "80"
+        }
+    }
+}
+
+variable "pub_seclist_egress_rules" {
+    type = "map"
+    default = {
+        role001 = {
+            protocol    = "6",
+            source      = "0.0.0.0/0",
+            min         = "22",
+            max         = "22"
+        }
+        role002 = {
+            protocol    = "6",
+            source      = "0.0.0.0/0",
+            min         = "80",
+            max         = "80"
+        }
+    }
 }

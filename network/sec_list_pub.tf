@@ -20,25 +20,28 @@ resource "oci_core_security_list" "seclist_public" {
         )
     }"
 
-
-    ingress_security_rules {
-        protocol    = "6"
-        source      = "0.0.0.0/0"
-
-        tcp_options {
-            min     = "22"
-            max     = "22"
+    dynamic "ingress_security_rules" {
+        for_each = "${var.pub_seclist_ingress_rules}"
+        content {
+            protocol    = "${ingress_security_rules.value["protocol"]}"
+            source      = "${ingress_security_rules.value["source"]}"
+            tcp_options {
+                min     = "${ingress_security_rules.value["min"]}"
+                max     = "${ingress_security_rules.value["max"]}"
+            }
         }
     }
 
-    egress_security_rules {
-        protocol    = "6"
-        destination = "0.0.0.0/0"
-
-        tcp_options {
-            min     = "22"
-            max     = "22"
-        }        
+    dynamic "egress_security_rules" {
+        for_each = "${var.pub_seclist_egress_rules}"
+        content {
+            protocol    = "${egress_security_rules.value["protocol"]}"
+            destination = "${egress_security_rules.value["source"]}"
+            tcp_options {
+                min     = "${egress_security_rules.value["min"]}"
+                max     = "${egress_security_rules.value["max"]}"
+            }
+        }
     }
 }
 
