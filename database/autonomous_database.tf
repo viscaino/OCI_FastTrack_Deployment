@@ -1,5 +1,5 @@
 # Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// Created by Bruno Viscaino //
 
 resource "random_string" "adb_password_creation" {
   length      = 16
