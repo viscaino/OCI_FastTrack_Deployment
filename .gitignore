@@ -1,4 +1,1 @@
-.\compute\userdata\id_rsa
-.\compute\userdata\id_rsa.pub
-.\x_sandbox
-.\x_sandbox\*.tf
+.TESTEFILE
