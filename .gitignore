@@ -1,4 +1,3 @@
-.id_rsa
-.id_rsa.pub
-.x_sandbox
-.main.tf
+.\compute\userdata\id_rsa
+.\compute\userdata\id_rsa.pub
+.\x_sandbox
