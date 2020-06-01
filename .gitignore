@@ -1,3 +1,9 @@
-.TESTEFILE
-**.\xx_sandbox\*
-**./xx_sandbox/*
+userdata/
+**userdata/
+.userdata/
+**.userdata/
+
+xx_sandbox/
+**xx_sandbox/
+.xx_sandbox/
+**.xx_sandbox/
