@@ -19,6 +19,7 @@ data "oci_identity_compartments" "my_storage_comp" {
         regex   = true
     }
 }
+
 data "oci_core_instances" "my_instances_for_bs" {
     compartment_id      = "${lookup(data.oci_identity_compartments.my_storage_comp.compartments[0], "id")}"
 }
