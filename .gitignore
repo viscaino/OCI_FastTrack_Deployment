@@ -1,9 +1,3 @@
-userdata/
-**userdata/
-.userdata/
-**.userdata/
-
-xx_sandbox/
+**id_rsa
+**id_rsa.pub
 **xx_sandbox/
-.xx_sandbox/
-**.xx_sandbox/

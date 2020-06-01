@@ -151,6 +151,7 @@ variable "public_seclist_name" {
 // SSH Public Key
 //
 variable "ssh_public_key" {
+    description = "include public key into userdata directory"
     default = "userdata/id_rsa.pub"
 }
 

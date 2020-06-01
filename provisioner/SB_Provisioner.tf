@@ -14,7 +14,8 @@ variable "region" {
 }
 
 variable "ssh_private_key" {
-    default = "userdata/id_rsa"
+    description = "include private key into userdata directory"
+    default     = "userdata/id_rsa"
 }
 
 variable "instance_ip" {}
