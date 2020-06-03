@@ -41,7 +41,7 @@ resource "oci_database_autonomous_database" "create_adb" {
   license_model           = "${var.adb_license_model}"
   whitelisted_ips         = ["0.0.0.0/24"]
 
-  defined_tags  = "${
+  defined_tags    =  "${
     map(
       "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
     )

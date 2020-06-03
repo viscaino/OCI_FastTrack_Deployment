@@ -20,6 +20,7 @@ resource "oci_core_subnet" "public" {
     route_table_id      = "${oci_core_route_table.public.id}"
     security_list_ids   = ["${oci_core_security_list.seclist_public.id}"]
     prohibit_public_ip_on_vnic = false
+
     defined_tags    =  "${
         map(
             "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"

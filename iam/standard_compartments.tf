@@ -26,8 +26,6 @@ resource "oci_identity_compartment" "parent_compartment" {
     depends_on      = ["oci_identity_tag.terraform_tag_key"]
     name            = "${var.env_prefix}_Compartment"
     description     = "${var.env_prefix}_Environment"
-#    enable_delete   = true // Default is "false" because the destruction is very slow. 
-
     defined_tags    =  "${
         map(
             "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
