@@ -29,7 +29,7 @@ resource "oci_database_autonomous_database" "create_adb" {
   depends_on      = ["oci_identity_compartment.child_compartment"]
   compartment_id  = "${lookup(data.oci_identity_compartments.my_database_comp.compartments[0], "id")}"
   display_name    = "${var.env_prefix}${var.adb_name}"
-  db_name         = "${var.adb_name}"
+  db_name         = "${var.env_prefix}${var.adb_name}"
   admin_password  = "${random_string.adb_password_creation.result}"
   
   cpu_core_count            = "1"
