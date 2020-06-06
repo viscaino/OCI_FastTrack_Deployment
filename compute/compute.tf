@@ -16,23 +16,15 @@
 ##
 ###################################################################
 
-#--INSTANCE-CREATION--------------------------------------------------------------------------------------------
-data "oci_identity_compartments" "my_compute_comp" {
-    depends_on      = ["oci_identity_compartment.child_compartment"]
-    compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
-
-    filter {
-        name    = "name"
-        values  = ["${var.env_prefix}\\w*Compute"]
-        regex   = true
-    }
-}
-
+#--INSTANCE-CREATION------------------------------------------------------------------------------------
 resource "oci_core_instance" "my_pub_instance" {
     for_each            = "${var.server_list}"
-    depends_on          = ["oci_core_subnet.public"]
+    depends_on          = [
+        "oci_core_subnet.public",
+        "oci_identity_tag.terraform_tag_key"
+    ]
     availability_domain = "${each.value["ad"]}"
-    compartment_id      = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
+    compartment_id      = "${lookup(oci_identity_compartment.child_compartment["Compute"], "id")}"
     display_name        = "${each.value["name"]}"
     shape               = "${each.value["shape"]}"
     
@@ -59,91 +51,25 @@ resource "oci_core_instance" "my_pub_instance" {
 
 }
 
-#--INSTANCE-Selection-----------------------------------------------------------------------------------------
-data "oci_core_instances" "my_instances" {
-    depends_on      = [
-        "oci_core_instance.my_pub_instance",
-        "oci_core_subnet.public"
-        ]
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
-
-    filter {
-        name    = "state"
-        values  = ["RUNNING"]
-    }
-}
-
-#--VOLUMES-CREATION--------------------------------------------------------------------------------------------
-data "oci_identity_compartments" "my_storage_comp" {
-    depends_on      = ["oci_identity_compartment.child_compartment"]
-    compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
-
-    filter {
-        name    = "name"
-        values  = ["${var.env_prefix}\\w*Storage"]
-        regex   = true
-    }
-}
-
+#--VOLUMES-CREATION-------------------------------------------------------------------------------------
 resource "oci_core_volume" "create_volume" {
     for_each            = "${var.server_list}"
     depends_on          = [
-        "oci_core_instance.my_pub_instance",
-        "data.oci_identity_compartments.my_storage_comp"
+        "oci_core_instance.my_pub_instance"
         ]
     availability_domain = "${each.value["ad"]}"
-    compartment_id      = "${lookup(data.oci_identity_compartments.my_storage_comp.compartments[0], "id")}"
+    compartment_id      = "${lookup(oci_identity_compartment.child_compartment["Storage"], "id")}"
     display_name        = "${each.value["volname"]}"
     size_in_gbs         = "${each.value["volsize"]}"
 }
 
-#--VOLUMES-Selection-----------------------------------------------------------------------------------------
-data "oci_core_volumes" "my_data_vols" {
-    depends_on      = ["oci_core_volume.create_volume"]
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_storage_comp.compartments[0], "id")}"
-
-    filter {
-        name    = "state"
-        values  = ["AVAILABLE"]
-    }
-}
-
-#--VOLUMES-Attachment---------------------------------------------------------------------------------------
-
+#--VOLUMES-Attachment-----------------------------------------------------------------------------------
 resource "oci_core_volume_attachment" "attach_volume" {
     for_each        = "${var.server_list}"
     depends_on      = ["oci_core_volume.create_volume"]
     attachment_type = "iscsi"
-    instance_id     = "${lookup(data.oci_core_instances.my_instances.instances[each.value["idxctrl"]], "id")}"
-    volume_id       = "${lookup(data.oci_core_volumes.my_data_vols.volumes[each.value["idxctrl"]], "id")}"
+//    instance_id     = "${lookup(oci_core_instance.my_pub_instance[each.value["idxctrl"]], "id")}"
+//    volume_id       = "${lookup(oci_core_volume.create_volume[each.value["idxctrl"]], "id")}"
+    instance_id     = "${lookup(oci_core_instance.my_pub_instance[each.key], "id")}"
+    volume_id       = "${lookup(oci_core_volume.create_volume[each.key], "id")}"
 }
-
-data "oci_core_volume_attachments" "my_data_attach" {
-    depends_on      = [
-        "oci_core_instance.my_pub_instance",
-        "oci_core_volume_attachment.attach_volume"
-    ]
-    compartment_id  = "${lookup(data.oci_identity_compartments.my_compute_comp.compartments[0], "id")}"
-}
-
-#--PROVISIONER-----------------------------------------------------------------------------------------------
-#
-#resource "null_resource" "remote-exec" {
-#    depends_on = [
-#        "oci_core_instance.my_pub_instance",
-#        "oci_core_volume_attachment.attach_volume"
-#    ] 
-#
-#    provisioner "remote-exec" {
-#        connection {
-#            agent   = false
-#            timeout = "5min"
-#            host    = "${data.oci_core_instances.my_instances.instances.public_ip}"
-#            user    =  "opc"
-#            private_key = "${file(var.ssh_private_key)}"
-#        }
-#        inline = ["touch /tmp/IMadeAFile.Right.Here"]           
-#    }
-#}
-#
-#--OUTPUTS---------------------------------------------------------------------------------------------------

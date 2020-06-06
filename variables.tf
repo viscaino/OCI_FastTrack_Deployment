@@ -31,10 +31,10 @@ variable "env_prefix" {
 variable "childmap" {
     type = "map"
     default = {
-        _Network_Comp  = "Network Compartment"
-        _Compute_Comp  = "Compute Compartment"
-        _Storage_Comp  = "Storage Compartment"
-        _Database_Comp = "Database Compartment"
+        Network  = "Network Compartment",
+        Compute  = "Compute Compartment",
+        Storage  = "Storage Compartment",
+        Database = "Database Compartment"
     }
 }
 
@@ -80,11 +80,11 @@ variable "terra_tag_value" {
 variable "group_map" {
     type = "map"
     default = {
-        _Network = "Network Group Admin"
-        _Compute = "Compute Group Admin"
-        _Storage = "Storage Group Admin"
-        _Database = "Database Group Admin"
-        _Admin   = "This Group is a Environment Admin"
+        _Network    = "Network Group Admin",
+        _Compute    = "Compute Group Admin",
+        _Storage    = "Storage Group Admin",
+        _Database   = "Database Group Admin",
+        _Admin      = "This Group is a Environment Admin"
     }
 }
 
@@ -177,16 +177,16 @@ variable "server_list" {
             pubip   = "true"
         }
 
-       inst1    = {
-           name    = "ServName2",
-           ad      = "hSxN:US-ASHBURN-AD-2",
-           shape   = "VM.Standard2.1",
-           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
-           volname = "ServName2Vol01",
-           volsize = "50",
-           idxctrl = "1",
-           pubip   = "true"
-       }
+//       inst1    = {
+//          name    = "ServName2",
+//           ad      = "hSxN:US-ASHBURN-AD-2",
+//           shape   = "VM.Standard2.1",
+//           image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
+//           volname = "ServName2Vol01",
+//           volsize = "50",
+//           idxctrl = "1",
+//           pubip   = "true"
+//       }
     }
 }
 

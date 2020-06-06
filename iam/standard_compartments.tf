@@ -38,7 +38,6 @@ resource "oci_identity_compartment" "parent_compartment" {
 //
 resource "oci_identity_compartment" "child_compartment" {
     for_each        = "${var.childmap}"
-    depends_on      = ["oci_identity_compartment.parent_compartment"]
     name            = "${var.env_prefix}${each.key}"
     compartment_id  = "${oci_identity_compartment.parent_compartment.id}"
     description     = "${var.env_prefix} ${each.value}"
@@ -47,4 +46,12 @@ resource "oci_identity_compartment" "child_compartment" {
             "${oci_identity_tag_namespace.terraform_tag_ns.name}.${oci_identity_tag.terraform_tag_key.name}", "${var.terra_tag_value}"
         )
     }"
+}
+
+output "res_my_child_compartments_output_1" {
+    value = "${oci_identity_compartment.child_compartment["Network"]}"
+}
+
+output "res_my_child_compartments_output_3" {
+    value = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
 }

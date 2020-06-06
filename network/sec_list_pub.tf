@@ -10,9 +10,9 @@
 ###################################################################
 
 resource "oci_core_security_list" "seclist_public" {
-    depends_on          = ["oci_core_vcn.create_vcn"]
-    compartment_id      = "${lookup(data.oci_identity_compartments.my_network_comp.compartments[0], "id")}"
-    vcn_id              = "${lookup(data.oci_core_vcns.my_data_vcn.virtual_networks[0], "id")}"
+//    depends_on          = ["oci_core_vcn.create_vcn"]
+    compartment_id      = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
+    vcn_id              = "${oci_core_vcn.create_vcn.id}"
     display_name        = "${var.env_prefix}${var.vcn_name}${var.public_seclist_name}"
     
     defined_tags    =  "${
@@ -47,6 +47,6 @@ resource "oci_core_security_list" "seclist_public" {
 }
 
 output "SecurityList_Pub_Output" {
-    depends_on  = ["oci_core_security_list.seclist_public"]
+//    depends_on  = ["oci_core_security_list.seclist_public"]
     value       = "${oci_core_security_list.seclist_public.id}"
 }
