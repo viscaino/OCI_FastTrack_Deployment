@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 ####!!IMPROVEMENT!!################################################
 ##
@@ -29,6 +28,5 @@ resource "oci_core_subnet" "public" {
 }
 
 output "Subnet_Pub_Output" {
-//    depends_on  = ["oci_core_subnet.public"]
     value       = "${oci_core_subnet.public.id}"
 }

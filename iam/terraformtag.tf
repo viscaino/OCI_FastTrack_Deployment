@@ -1,16 +1,15 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
-// TAG Namespace Creation.
-//
+## TAG Namespace Creation.
+#
 resource "oci_identity_tag_namespace" "terraform_tag_ns" {
     compartment_id  = "${var.tenancy_ocid}"
     description     = "TAG Namespace to identify Terraform creation."
     name            = "${var.env_prefix}${var.terra_tag_ns}"
 }
 
-// TAG Key Creation.
-//
+## TAG Key Creation.
+#
 resource "oci_identity_tag" "terraform_tag_key" {
     tag_namespace_id  = "${oci_identity_tag_namespace.terraform_tag_ns.id}"
     description       = "TAG Key to identify Terraform creation."

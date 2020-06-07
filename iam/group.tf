@@ -1,8 +1,14 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
-// Creating Group of Admin Per Environment Prefix
-//
+###################################################################
+##
+##      Group
+##      This block deploy groups based on the map variable. The 
+##      taxonomy use Env + Scope + _Group, example:
+##        DevNetwork_Group
+##
+###################################################################
+
 resource "oci_identity_group" "groups" {
     for_each        = "${var.group_map}"
     compartment_id  = "${var.tenancy_ocid}"

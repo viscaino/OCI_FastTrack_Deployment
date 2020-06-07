@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 ####!!IMPROVEMENT!!################################################
 ##
@@ -9,10 +8,6 @@
 ###################################################################
 
 resource "oci_core_subnet" "private" {  
-//    depends_on      = [
-//        "oci_core_vcn.create_vcn",
-//        "oci_core_route_table.private"
-//        ]
     display_name        = "${var.env_prefix}${var.vcn_name}${var.private_subnet_name}"
     compartment_id      = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
     vcn_id              = "${oci_core_vcn.create_vcn.id}"
@@ -29,6 +24,5 @@ resource "oci_core_subnet" "private" {
 }
 
 output "Subnet_Priv_Output" {
-//    depends_on  = ["oci_core_subnet.private"]
     value       = "${oci_core_subnet.private.id}"
 }

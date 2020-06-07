@@ -1,5 +1,5 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
+
 ###################################################################
 ##
 ##      CCOMPARTMENT BLOCK
@@ -19,8 +19,8 @@
 ##
 ###################################################################
 
-// Create a Parent Compartment:
-//
+## Create a Parent Compartment:
+#
 resource "oci_identity_compartment" "parent_compartment" {
     compartment_id  = "${var.root_compartment}"
     depends_on      = ["oci_identity_tag.terraform_tag_key"]
@@ -33,9 +33,9 @@ resource "oci_identity_compartment" "parent_compartment" {
     }"
 }
 
-// Create a Child Compartments:
-// PS: This block use a for_each function based on map variable
-//
+## Create a Child Compartments:
+## PS: This block use a for_each function based on map variable
+#
 resource "oci_identity_compartment" "child_compartment" {
     for_each        = "${var.childmap}"
     name            = "${var.env_prefix}${each.key}"

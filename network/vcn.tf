@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 ###################################################################
 ##

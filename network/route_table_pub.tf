@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 resource "oci_core_route_table" "public" {
     depends_on      = [
@@ -22,6 +21,5 @@ resource "oci_core_route_table" "public" {
 }
 
 output "RouteTable_Pub_Output" {
-//    depends_on  = ["oci_core_route_table.public"]
     value       = "${oci_core_route_table.public.id}"
 }

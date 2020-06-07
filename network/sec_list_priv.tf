@@ -1,8 +1,6 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 resource "oci_core_security_list" "seclist_private" {
-//    depends_on      = ["oci_core_vcn.create_vcn"]
     compartment_id      = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
     vcn_id              = "${oci_core_vcn.create_vcn.id}"
     display_name        = "${var.env_prefix}${var.vcn_name}${var.private_seclist_name}"
@@ -15,6 +13,5 @@ resource "oci_core_security_list" "seclist_private" {
 }
 
 output "SecurityList_Priv_Output" {
-//    depends_on  = ["oci_core_security_list.seclist_private"]
     value       = "${oci_core_security_list.seclist_private.id}"
 }

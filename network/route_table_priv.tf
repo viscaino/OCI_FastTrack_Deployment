@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 resource "oci_core_route_table" "private" {
     display_name    = "${var.env_prefix}${var.vcn_name}${var.priv_route_tab_name}"
@@ -14,6 +13,5 @@ resource "oci_core_route_table" "private" {
 }
 
 output "RouteTable_Priv_Output" {
-//    depends_on  = ["oci_core_route_table.private"]
     value       = "${oci_core_route_table.private.id}"
 }

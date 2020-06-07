@@ -1,5 +1,4 @@
-# Terraform v0.12 is assumed
-// Created by Bruno Viscaino
+// 2020, Terradorm file created by Bruno Viscaino
 
 ###################################################################
 ##
@@ -17,6 +16,7 @@
 ###################################################################
 
 #--INSTANCE-CREATION------------------------------------------------------------------------------------
+#
 resource "oci_core_instance" "my_pub_instance" {
     for_each            = "${var.server_list}"
     depends_on          = [
@@ -52,6 +52,7 @@ resource "oci_core_instance" "my_pub_instance" {
 }
 
 #--VOLUMES-CREATION-------------------------------------------------------------------------------------
+#
 resource "oci_core_volume" "create_volume" {
     for_each            = "${var.server_list}"
     depends_on          = [
@@ -64,12 +65,11 @@ resource "oci_core_volume" "create_volume" {
 }
 
 #--VOLUMES-Attachment-----------------------------------------------------------------------------------
+#
 resource "oci_core_volume_attachment" "attach_volume" {
     for_each        = "${var.server_list}"
     depends_on      = ["oci_core_volume.create_volume"]
     attachment_type = "iscsi"
-//    instance_id     = "${lookup(oci_core_instance.my_pub_instance[each.value["idxctrl"]], "id")}"
-//    volume_id       = "${lookup(oci_core_volume.create_volume[each.value["idxctrl"]], "id")}"
     instance_id     = "${lookup(oci_core_instance.my_pub_instance[each.key], "id")}"
     volume_id       = "${lookup(oci_core_volume.create_volume[each.key], "id")}"
 }
