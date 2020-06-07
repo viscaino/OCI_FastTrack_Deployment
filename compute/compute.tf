@@ -8,11 +8,10 @@
 ##          - Volumes
 ##          - Volumes Attachment
 ##
-##      PS: We are working to create a map for AD selection.
 ##      PS: Create a randomic AD distribution
-##      PS: Create a possibility to create multiple volumes
+##      PS: Working on multiple volumes creation and attachment
 ##          dynamically.
-##
+##          
 ###################################################################
 
 #--INSTANCE-CREATION------------------------------------------------------------------------------------
