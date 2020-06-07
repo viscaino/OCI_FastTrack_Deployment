@@ -251,3 +251,66 @@ variable "pub_seclist_egress_rules" {
         }
     }
 }
+
+## Instance Config
+#
+variable "instconfig_name" {
+    value   = "InstConfig"
+}
+
+variable "instconfig_shape" {
+    value   = "VM.Standard.E2.1"
+}
+
+variable "instconfig_launch_name" {
+    value   = "Instance"
+}
+
+variable "instconfig_image" {
+    value   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda"
+}
+
+## Instance Pool
+#
+variable "instance_pool_name" {
+    value   = "InstancePoolName"
+}
+
+variable "instance_pool_AD" {
+    value   = "hSxN:US-ASHBURN-AD-3"
+}
+
+
+## Autoscaling
+#
+variable "autoscaling_display_name" {
+    value   = "AutoInst"
+}
+
+## Autoscaling: Scale OUT rule
+#
+variable "ScaleOutMetric" {
+    value   = "CPU_UTILIZATION"
+}
+
+variable "ScaleOutOperator" {
+    value   = "GT"
+}
+
+variable "ScaleOutValue" {
+    value   = "1"
+}
+
+## Autoscaling: Scale IN rule
+#
+variable "ScaleInMetric" {
+    value   = "CPU_UTILIZATION"
+}
+
+variable "ScaleInOperator" {
+    value   = "LT"
+}
+
+variable "ScaleInValue" {
+    value   = "1"
+}
