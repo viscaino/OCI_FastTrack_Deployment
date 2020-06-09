@@ -255,62 +255,62 @@ variable "pub_seclist_egress_rules" {
 ## Instance Config
 #
 variable "instconfig_name" {
-    value   = "InstConfig"
+    default = "InstConfig"
 }
 
 variable "instconfig_shape" {
-    value   = "VM.Standard.E2.1"
+    default = "VM.Standard.E2.1"
 }
 
 variable "instconfig_launch_name" {
-    value   = "Instance"
+    default = "Instance"
 }
 
 variable "instconfig_image" {
-    value   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda"
+    default = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda"
 }
 
 ## Instance Pool
 #
 variable "instance_pool_name" {
-    value   = "InstancePoolName"
+    default = "InstancePoolName"
 }
 
 variable "instance_pool_AD" {
-    value   = "hSxN:US-ASHBURN-AD-3"
+    default = "hSxN:US-ASHBURN-AD-3"
 }
 
 
 ## Autoscaling
 #
 variable "autoscaling_display_name" {
-    value   = "AutoInst"
+    default = "AutoInst"
 }
 
 ## Autoscaling: Scale OUT rule
 #
 variable "ScaleOutMetric" {
-    value   = "CPU_UTILIZATION"
+    default = "CPU_UTILIZATION"
 }
 
 variable "ScaleOutOperator" {
-    value   = "GT"
+    default = "GT"
 }
 
 variable "ScaleOutValue" {
-    value   = "1"
+    default = "1"
 }
 
 ## Autoscaling: Scale IN rule
 #
 variable "ScaleInMetric" {
-    value   = "CPU_UTILIZATION"
+    default = "CPU_UTILIZATION"
 }
 
 variable "ScaleInOperator" {
-    value   = "LT"
+    default = "LT"
 }
 
 variable "ScaleInValue" {
-    value   = "1"
+    default = "1"
 }
