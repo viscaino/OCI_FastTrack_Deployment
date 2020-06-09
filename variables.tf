@@ -42,16 +42,16 @@ variable "PolicyMap" {
     type = "map"
     default = {
         Network_Policy = {
-            statement_1 = "Allow group Dev_Network_Group to use instance-family in compartment Dev_Compartment:Dev_Network_Comp",
-            statement_2 = "Allow group Dev_Network_Group to manage volume-family in compartment Dev_Compartment:Dev_Network_Comp"
+            statement_1 = "Allow group Dev_Network_Group to use instance-family in compartment Dev_Compartment:DevNetwork",
+            statement_2 = "Allow group Dev_Network_Group to manage volume-family in compartment Dev_Compartment:DevNetwork"
         }
         Compute_Polcy = {
-            statement_1 = "Allow group Dev_Compute_Group to manage instance-family in compartment Dev_Compartment:Dev_Compute_Comp",
-            statement_2 = "Allow group Dev_Compute_Group to use volume-family in compartment Dev_Compartment:Dev_Compute_Comp"
+            statement_1 = "Allow group Dev_Compute_Group to manage instance-family in compartment Dev_Compartment:DevCompute",
+            statement_2 = "Allow group Dev_Compute_Group to use volume-family in compartment Dev_Compartment:DevCompute"
         }
         Storage_Polcy = {
-            statement_1 = "Allow group Dev_Storage_Group to manage volume-family in compartment Dev_Compartment:Dev_Storage_Comp",
-            statement_2 = "Allow group Dev_Storage_Group to use instance-family in compartment Dev_Compartment:Dev_Storage_Comp"
+            statement_1 = "Allow group Dev_Storage_Group to manage volume-family in compartment Dev_Compartment:DevStorage",
+            statement_2 = "Allow group Dev_Storage_Group to use instance-family in compartment Dev_Compartment:DevStorage"
         }
     }
 }
@@ -259,7 +259,7 @@ variable "instconfig_name" {
 }
 
 variable "instconfig_shape" {
-    default = "VM.Standard.E2.1"
+    default = "VM.Standard.E2.2"
 }
 
 variable "instconfig_launch_name" {
@@ -273,7 +273,11 @@ variable "instconfig_image" {
 ## Instance Pool
 #
 variable "instance_pool_name" {
-    default = "InstancePoolName"
+    default = "_InstancePoolName"
+}
+
+variable "instance_pool_size" {
+    default = "1"
 }
 
 variable "instance_pool_AD" {
@@ -287,6 +291,18 @@ variable "autoscaling_display_name" {
     default = "AutoInst"
 }
 
+variable "capacity_initial" {
+    default = "1"
+}
+
+variable "capacity_max" {
+    default = "1"
+}
+
+variable "capacity_min" {
+    default = "1"
+}
+
 ## Autoscaling: Scale OUT rule
 #
 variable "ScaleOutMetric" {
@@ -298,7 +314,7 @@ variable "ScaleOutOperator" {
 }
 
 variable "ScaleOutValue" {
-    default = "1"
+    default = "90"
 }
 
 ## Autoscaling: Scale IN rule
@@ -312,5 +328,5 @@ variable "ScaleInOperator" {
 }
 
 variable "ScaleInValue" {
-    default = "1"
+    default = "70"
 }
