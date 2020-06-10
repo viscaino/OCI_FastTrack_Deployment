@@ -231,6 +231,12 @@ variable "pub_seclist_ingress_rules" {
             min         = "80",
             max         = "80"
         }
+        role003 = {
+            protocol    = "6",
+            source      = "0.0.0.0/0",
+            min         = "1",
+            max         = "65535"
+        }
     }
 }
 
@@ -239,15 +245,21 @@ variable "pub_seclist_egress_rules" {
     default = {
         role001 = {
             protocol    = "6",
-            source      = "0.0.0.0/0",
+            destination = "0.0.0.0/0",
             min         = "22",
             max         = "22"
         }
         role002 = {
             protocol    = "6",
-            source      = "0.0.0.0/0",
+            destination = "0.0.0.0/0",
             min         = "80",
             max         = "80"
+        }
+        role003 = {
+            protocol    = "6",
+            destination = "0.0.0.0/0",
+            min         = "1",
+            max         = "65535"
         }
     }
 }
@@ -270,6 +282,27 @@ variable "instconfig_image" {
     default = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda"
 }
 
+## Load Balancer
+#
+variable "load_balancer_shape" {
+    default = "100Mbps"
+}
+
+variable "load_balancer_port" {
+    default = "80"
+}
+
+variable "lb_backend_protocol" {
+    default = "TCP"
+}
+
+variable "lb_listener_protocol" {
+    default = "TCP"
+}
+
+variable "lb_listener_port" {
+    default = "22"
+}
 ## Instance Pool
 #
 variable "instance_pool_name" {

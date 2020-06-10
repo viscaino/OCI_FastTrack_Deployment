@@ -22,8 +22,10 @@ resource "oci_core_security_list" "seclist_public" {
     dynamic "ingress_security_rules" {
         for_each = "${var.pub_seclist_ingress_rules}"
         content {
+
             protocol    = "${ingress_security_rules.value["protocol"]}"
             source      = "${ingress_security_rules.value["source"]}"
+
             tcp_options {
                 min     = "${ingress_security_rules.value["min"]}"
                 max     = "${ingress_security_rules.value["max"]}"
@@ -34,8 +36,10 @@ resource "oci_core_security_list" "seclist_public" {
     dynamic "egress_security_rules" {
         for_each = "${var.pub_seclist_egress_rules}"
         content {
+
             protocol    = "${egress_security_rules.value["protocol"]}"
-            destination = "${egress_security_rules.value["source"]}"
+            destination = "${egress_security_rules.value["destination"]}"
+
             tcp_options {
                 min     = "${egress_security_rules.value["min"]}"
                 max     = "${egress_security_rules.value["max"]}"

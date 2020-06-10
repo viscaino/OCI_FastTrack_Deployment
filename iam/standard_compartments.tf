@@ -13,6 +13,7 @@
 ##      |_EnvPrefixNetworkCompartment
 ##      |_EnvPrefixStorageCompartment
 ##      |_EnvPrefixComputeCompartment
+##      |_EnvPrefixDatabaseCompartment
 ##
 ##      Repeat it for QA and Dev changing the Environment Prefix
 ##      variable.
@@ -48,10 +49,18 @@ resource "oci_identity_compartment" "child_compartment" {
     }"
 }
 
-output "res_my_child_compartments_output_1" {
-    value = "${oci_identity_compartment.child_compartment["Network"]}"
+output "NetworkCompartment_ID" {
+    value = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
 }
 
-output "res_my_child_compartments_output_3" {
-    value = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
+output "ComputeCompartment_ID" {
+    value = "${lookup(oci_identity_compartment.child_compartment["Compute"], "id")}"
+}
+
+output "StorageCompartment_ID" {
+    value = "${lookup(oci_identity_compartment.child_compartment["Storage"], "id")}"
+}
+
+output "DatabaseCompartment_ID" {
+    value = "${lookup(oci_identity_compartment.child_compartment["Database"], "id")}"
 }

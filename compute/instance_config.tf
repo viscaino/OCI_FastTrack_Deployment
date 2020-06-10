@@ -18,18 +18,23 @@ resource "oci_core_instance_configuration" "inst_config" {
             create_vnic_details {
                 assign_public_ip    = true
                 display_name        = "${var.env_prefix}${var.instconfig_launch_name}_pubvnic"
+                subnet_id           = "${oci_core_subnet.public.id}"
             }
+
+            metadata    = {
+                ssh_authorized_keys = "${file(var.ssh_public_key)}"
+#                user_data = "${base64encode(var.inst_config_user_data)}"
+            }
+       
+            source_details {
+                source_type = "image"
+                image_id    = "${var.instconfig_image}"
+            }      
             
             extended_metadata = {
                 some_string   = "stringA"
                 nested_object = "{\"some_string\": \"stringB\", \"object\": {\"some_string\": \"stringC\"}}"
-            }
-                        
-            source_details {
-                source_type = "image"
-                image_id    = "${var.instconfig_image}"
-            }
-            
+            }      
         }
     }
 }

@@ -49,7 +49,7 @@ resource "oci_core_instance" "my_pub_instance" {
     }"
 
 }
-
+/*
 #--VOLUMES-CREATION-------------------------------------------------------------------------------------
 #
 resource "oci_core_volume" "create_volume" {
@@ -72,3 +72,4 @@ resource "oci_core_volume_attachment" "attach_volume" {
     instance_id     = "${lookup(oci_core_instance.my_pub_instance[each.key], "id")}"
     volume_id       = "${lookup(oci_core_volume.create_volume[each.key], "id")}"
 }
+*/

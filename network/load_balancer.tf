@@ -8,25 +8,20 @@
 ###--!! WORKING IN PROGRESS !!--###
 ###--!! WORKING IN PROGRESS !!--###
 
-resource "oci_load_balancer" "lb1" {
-    shape           = "10Mbps"
+resource "oci_load_balancer_load_balancer" "lb1" {
     compartment_id  = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
+    display_name    = "${var.env_prefix}_lb"
+    shape           = "${var.load_balancer_shape}"
     subnet_ids      = [
         "${oci_core_subnet.public.id}"
     ]
-    display_name    = "${var.env_prefix}_loadbalance"
+    is_private      = false
 }
 
-resource "oci_load_balancer_backend_set" "lb1_bset" {
-    name                = "${var.env_prefix}_backend_set"
-    load_balancer_id    = "${oci_load_balancer.lb1.id}"
-    policy              = "ROUND_ROBIN"
+output "load_balancer_id" {
+    value   = "${oci_load_balancer_load_balancer.lb1.id}"
+}
 
-
-    health_checker      = {
-        port        = "80"
-        protocol    = "HTTP"
-        url_path    = "/"
-        response_body_regex = ".*"
-    }
+output "load_balancer_ip" {
+    value   = "${oci_load_balancer_load_balancer.lb1.ip_address_details}"
 }
