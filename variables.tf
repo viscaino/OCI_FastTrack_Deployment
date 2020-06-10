@@ -168,7 +168,7 @@ variable "server_list" {
         inst0    = {
             name    = "ServName1",
             ad      = "hSxN:US-ASHBURN-AD-1",
-            shape   = "VM.Standard2.1",
+            shape   = "VM.Standard.E2.2",
             image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
             volname = "ServName1Vol01",
             volsize = "50",
@@ -179,7 +179,7 @@ variable "server_list" {
        inst1    = {
           name    = "ServName2",
            ad      = "hSxN:US-ASHBURN-AD-2",
-           shape   = "VM.Standard2.1",
+           shape   = "VM.Standard.E2.2",
            image   = "ocid1.image.oc1.iad.aaaaaaaageeenzyuxgia726xur4ztaoxbxyjlxogdhreu3ngfj2gji3bayda",
            volname = "ServName2Vol01",
            volsize = "50",
@@ -259,7 +259,7 @@ variable "instconfig_name" {
 }
 
 variable "instconfig_shape" {
-    default = "VM.Standard.E2.2"
+    default = "VM.Standard2.1"
 }
 
 variable "instconfig_launch_name" {
@@ -284,7 +284,6 @@ variable "instance_pool_AD" {
     default = "hSxN:US-ASHBURN-AD-3"
 }
 
-
 ## Autoscaling
 #
 variable "autoscaling_display_name" {
@@ -296,7 +295,7 @@ variable "capacity_initial" {
 }
 
 variable "capacity_max" {
-    default = "1"
+    default = "2"
 }
 
 variable "capacity_min" {
