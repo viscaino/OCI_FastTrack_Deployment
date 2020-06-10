@@ -9,7 +9,7 @@
 ###--!! WORKING IN PROGRESS !!--###
 
 resource "oci_load_balancer" "lb1" {
-    shape           = "100Mbps"
+    shape           = "10Mbps"
     compartment_id  = "${lookup(oci_identity_compartment.child_compartment["Network"], "id")}"
     subnet_ids      = [
         "${oci_core_subnet.public.id}"
@@ -21,7 +21,7 @@ resource "oci_load_balancer_backend_set" "lb1_bset" {
     name                = "${var.env_prefix}_backend_set"
     load_balancer_id    = "${oci_load_balancer.lb1.id}"
     policy              = "ROUND_ROBIN"
-    
+
 
     health_checker      = {
         port        = "80"
