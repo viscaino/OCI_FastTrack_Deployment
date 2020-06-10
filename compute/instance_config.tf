@@ -1,17 +1,9 @@
 // 2020, Terradorm file created by Bruno Viscaino
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
-###--!! WORKING IN PROGRESS !!--###
 
 resource "oci_core_instance_configuration" "inst_config" {
-    depends_on          = [
-        "oci_core_instance.my_pub_instance"
-    ] 
+#    depends_on          = [
+#        "oci_core_instance.my_pub_instance"
+#    ] 
     compartment_id  = "${lookup(oci_identity_compartment.child_compartment["Compute"], "id")}"
     display_name    = "${var.env_prefix}${var.instconfig_name}"
     
