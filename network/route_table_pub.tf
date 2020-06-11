@@ -20,6 +20,6 @@ resource "oci_core_route_table" "public" {
     }
 }
 
-output "RouteTable_Pub_Output" {
+output "Public_RouteTable_ID" {
     value       = "${oci_core_route_table.public.id}"
 }

@@ -12,6 +12,6 @@ resource "oci_core_security_list" "seclist_private" {
     }"
 }
 
-output "SecurityList_Priv_Output" {
+output "Private_SecurityList_ID" {
     value       = "${oci_core_security_list.seclist_private.id}"
 }

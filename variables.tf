@@ -289,7 +289,7 @@ variable "load_balancer_shape" {
 }
 
 variable "load_balancer_port" {
-    default = "80"
+    default = "22"
 }
 
 variable "lb_backend_protocol" {

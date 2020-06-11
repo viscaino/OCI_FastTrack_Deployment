@@ -27,6 +27,6 @@ resource "oci_core_subnet" "public" {
     }"
 }
 
-output "Subnet_Pub_Output" {
+output "Public_Subnet_ID" {
     value       = "${oci_core_subnet.public.id}"
 }

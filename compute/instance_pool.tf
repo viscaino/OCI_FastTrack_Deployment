@@ -15,7 +15,7 @@ resource "oci_core_instance_pool" "instance_pool" {
         load_balancer_id    = "${oci_load_balancer_load_balancer.lb1.id}"
         backend_set_name    = "${oci_load_balancer_backend_set.lb1_bset.name}"
         port                = "${var.load_balancer_port}"
-        vnic_selection      = "Primary VNIC"
+        vnic_selection      = "${var.env_prefix}${var.instconfig_launch_name}_pubvnic"
     }
     
     placement_configurations {

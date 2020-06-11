@@ -23,6 +23,6 @@ resource "oci_core_subnet" "private" {
     }"
 }
 
-output "Subnet_Priv_Output" {
+output "Private_Subnet_ID" {
     value       = "${oci_core_subnet.private.id}"
 }

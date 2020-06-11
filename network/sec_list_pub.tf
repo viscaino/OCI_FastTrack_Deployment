@@ -48,6 +48,6 @@ resource "oci_core_security_list" "seclist_public" {
     }
 }
 
-output "SecurityList_Pub_Output" {
+output "Public_SecurityList_ID" {
     value       = "${oci_core_security_list.seclist_public.id}"
 }

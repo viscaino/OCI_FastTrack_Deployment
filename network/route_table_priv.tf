@@ -12,6 +12,6 @@ resource "oci_core_route_table" "private" {
     }"
 }
 
-output "RouteTable_Priv_Output" {
+output "Private_RouteTable_ID" {
     value       = "${oci_core_route_table.private.id}"
 }
