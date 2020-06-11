@@ -44,4 +44,3 @@ resource "oci_load_balancer_listener" "lb-listener1" {
   port                     = "${var.lb_listener_port}"
   protocol                 = "${var.lb_listener_protocol}"
 }
-
