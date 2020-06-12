@@ -3,7 +3,6 @@
 resource "oci_autoscaling_auto_scaling_configuration" "autoscaling_config" {
     depends_on              = [
         "oci_core_instance_pool.instance_pool"
-#        "oci_core_instance_configuration.inst_config"
     ]
     compartment_id          = "${lookup(oci_identity_compartment.child_compartment["Compute"], "id")}"
     cool_down_in_seconds    = "300"
