@@ -175,7 +175,7 @@ variable "server_list" {
             idxctrl = "0",
             pubip   = "true"
         }
-/*
+
        inst1    = {
           name    = "ServName2",
            ad      = "hSxN:US-ASHBURN-AD-2",
@@ -186,7 +186,7 @@ variable "server_list" {
            idxctrl = "1",
            pubip   = "true"
        }
-*/
+
     }
 }
 
