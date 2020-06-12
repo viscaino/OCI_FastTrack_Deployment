@@ -19,14 +19,6 @@ resource "oci_load_balancer_load_balancer" "lb1" {
     ]
 }
 
-output "LoadBalancer_ID" {
-    value   = "${oci_load_balancer_load_balancer.lb1.id}"
-}
-
-output "LoadBalancer_IP" {
-    value   = "${oci_load_balancer_load_balancer.lb1.ip_address_details}"
-}
-
 resource "oci_load_balancer_backend_set" "lb1_bset" {
     name                = "${var.env_prefix}_backend_set"
     load_balancer_id    = "${oci_load_balancer_load_balancer.lb1.id}"
@@ -44,3 +36,13 @@ resource "oci_load_balancer_listener" "lb-listener1" {
   port                     = "${var.lb_listener_port}"
   protocol                 = "${var.lb_listener_protocol}"
 }
+
+output "LoadBalancer_ID" {
+    value   = "${oci_load_balancer_load_balancer.lb1.id}"
+}
+
+/*
+output "LoadBalancer_IP" {
+    value   = "${oci_load_balancer_load_balancer.lb1.ip_address_details}"
+}
+*/

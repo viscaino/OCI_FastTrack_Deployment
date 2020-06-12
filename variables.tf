@@ -202,6 +202,12 @@ variable "adb_name" {
     default = "adbdb01"
 }
 
+## Autonomous DB Version
+#
+variable "adb_version" {
+    default = "18c"
+}
+
 ## Autonomous DB Autoscaling policy
 #
 variable "adb_autoscaling" {

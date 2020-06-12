@@ -7,12 +7,7 @@ resource "random_string" "adb_password_creation" {
   min_upper   = 1
   min_special = 1
 }
-/*
-data "oci_database_autonomous_db_versions" "get_version" {
-  compartment_id  = "${lookup(oci_identity_compartment.child_compartment["Database"], "id")}"
-  db_workload       = "${var.adb_workload}"
-}
-*/
+
 resource "oci_database_autonomous_database" "create_adb" {
   depends_on      = ["oci_identity_compartment.child_compartment"]
   compartment_id  = "${lookup(oci_identity_compartment.child_compartment["Database"], "id")}"
@@ -23,8 +18,7 @@ resource "oci_database_autonomous_database" "create_adb" {
   cpu_core_count            = "1"
   data_storage_size_in_tbs  = "1"
   
-  #db_version              = "${data.oci_database_autonomous_db_versions.get_version.autonomous_db_versions.0.version}"
-  db_version              = "18c"
+  db_version              = "${var.adb_version}"
   db_workload             = "${var.adb_workload}"
   is_auto_scaling_enabled = "${var.adb_autoscaling}"
   license_model           = "${var.adb_license_model}"
@@ -38,15 +32,15 @@ resource "oci_database_autonomous_database" "create_adb" {
 
 }
 
+output "ADB_ID" {
+    value = "${oci_database_autonomous_database.create_adb.id}"
+}
+
 /*
 data "oci_database_autonomous_database_wallet" "data_adb_wallet" {
   autonomous_database_id = "${oci_database_autonomous_database.create_adb.id}"
   password               = "${random_string.adb_password_creation.result}"
   base64_encode_content  = "true"
-
-output "adb_output" {
-    value = "${oci_database_autonomous_database.create_adb}"
-}
 
 output "data_adb_wallet_output" {
     value   = "${data.oci_database_autonomous_database_wallet.data_adb_wallet}"
