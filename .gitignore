@@ -3,3 +3,9 @@
 **xx_sandbox/
 **xx_sample_wihtout_datasource/
 **.terraform
+**oci_api_key.pem
+**oci_api_key_public.pem
+**id_rsa_tf
+**id_rsa_tf.pub
+**keys/
+**provider_sec.tf
