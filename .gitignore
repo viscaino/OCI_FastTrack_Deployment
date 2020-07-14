@@ -9,3 +9,6 @@
 **id_rsa_tf.pub
 **keys/
 **provider_sec.tf
+**terraform.tfstate
+**.terraform.tfstate.lock.info
+**terraform.tfstate.backup
