@@ -3,6 +3,7 @@ The OCI FastTrack Deployment code is an useful code to promote a initial OCI set
 
 Welcome to my Terraform Develpment Project. Join us on this code journey!!
 
+**!! THIS SAMPLE OF TERRAFORM SCRIPTS WAS DEVELOPED FOR EDUCATIONAL PROPOSES. THIS IS NOT AN OFFICAL ORACLE DOCUMENTATION. !!**
 
 **Some Tips:**
 
